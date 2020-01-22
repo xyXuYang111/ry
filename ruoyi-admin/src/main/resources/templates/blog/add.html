@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include :: header('新增岗位')" />
+</head>
+<body class="white-bg">
+	<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+		<form class="form-horizontal m" id="form-blog-add">
+			<div class="form-group">
+				<label class="col-sm-3 control-label is-required">博客名称：</label>
+				<div class="col-sm-8">
+					<input class="form-control" type="text" name="blogTitle" id="blogTitle" required>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label is-required">博客类型：</label>
+				<div class="col-sm-8">
+						<input class="form-control" type="text" name="blogType" id="blogType" required>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label is-required">博客说明：</label>
+				<div class="col-sm-8">
+					<input class="form-control" type="text" name="blogRemark" id="blogRemark" required>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">博客内容：</label>
+				<div class="col-sm-8">
+					<textarea id="blogContent" name="blogContent" class="form-control" cols="3" rows="6"></textarea>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">说明：</label>
+				<div class="col-sm-8">
+					<textarea id="remark" name="remark" class="form-control" cols="3" rows="10"></textarea>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label is-required">博客来源：</label>
+				<div class="col-sm-8">
+					<input class="form-control" type="text" name="blogUrl" id="blogUrl">
+				</div>
+			</div>
+		</form>
+	</div>
+	<th:block th:include="include :: footer" />
+	<script type="text/javascript">
+		var prefix = ctx + "system/blog";
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	        	$.operate.save(prefix + "/add", $('#form-blog-add').serialize());
+	        }
+	    }
+	</script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include :: header('修改博客')" />
+</head>
+<body class="white-bg">
+	<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+		<form class="form-horizontal m" id="form-blog-edit" th:object="${blog}">
+			<input id="blogId" name="blogId" type="hidden" th:field="*{blogId}"/>
+			<div class="form-group">
+				<label class="col-sm-3 control-label is-required">博客名称：</label>
+				<div class="col-sm-8">
+					<input class="form-control" type="text" name="postName" id="postName" th:field="*{blogTitle}" required>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label is-required">博客类型：</label>
+				<div class="col-sm-8">
+					<input class="form-control" type="text" name="blogType" id="blogType"  th:field="*{blogType}">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label is-required">博客备注：</label>
+				<div class="col-sm-8">
+					<input class="form-control" type="text" name="blogRemark" id="blogRemark" th:field="*{blogRemark}" required>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">博客说明：</label>
+				<div class="col-sm-8">
+					<textarea id="blogContent" name="blogContent" class="form-control" cols="3"  rows="6">[[*{blogContent}]]</textarea>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">备注：</label>
+				<div class="col-sm-8">
+					<textarea id="remark" name="remark" class="form-control" cols="3"  rows="10">[[*{remark}]]</textarea>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label is-required">博客来源：</label>
+				<div class="col-sm-8">
+					<input class="form-control" type="text" name="blogUrl" id="blogUrl"  th:field="*{blogUrl}">
+				</div>
+			</div>
+		</form>
+	</div>
+	<th:block th:include="include :: footer" />
+	<script type="text/javascript">
+		var prefix = ctx + "system/blog";
+		
+		function submitHandler() {
+	        if ($.validate.form()) {
+	        	$.operate.save(prefix + "/edit", $('#form-blog-edit').serialize());
+	        }
+	    }
+	</script>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysBlogMapper">
+    
+    <resultMap type="SysBlog" id="SysBlogResult">
+    	<id     property="blogId"      column="blog_id"      />
+        <result property="blogTitle"    column="blog_title"    />
+        <result property="blogRemark"     column="blog_remark"     />
+        <result property="blogContent"   column="blog_content"   />
+        <result property="blogType"     column="blog_type"     />
+        <result property="blogUrl"   column="blog_url"   />
+        <result property="userId"    column="user_id"    />
+        <result property="createBy"      column="create_by"      />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"      column="update_by"      />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+    
+    <sql id="selectBlogVo">
+        select blog_id, blog_title, blog_remark, blog_content,blog_type, blog_url, user_id, create_by, create_time, update_by, update_time, remark
+		from sys_blog
+    </sql>
+    
+    <!-- 查询条件 -->
+	<sql id="sqlwhereSearch">
+		<where>
+			<if test="blogId !=null">
+				and blog_id = #{blogId}
+			</if>
+			<if test="blogRemark !=null and blogRemark != ''">
+				and blog_remark = #{blogRemark}
+			</if>
+            <if test="userId !=null and userId != ''">
+                and user_id = #{userId}
+            </if>
+            <if test="blogTitle !=null and blogTitle != ''">
+                and blog_title = #{blogTitle}
+            </if>
+		</where>
+	</sql>
+    
+    <select id="selectBlog" parameterType="SysBlog" resultMap="SysBlogResult">
+        <include refid="selectBlogVo"/>
+        <include refid="sqlwhereSearch"/>
+    </select>
+    
+    <select id="selectBlogList" parameterType="SysBlog" resultMap="SysBlogResult">
+        <include refid="selectBlogVo"/>
+        <where>
+			<if test="blogTitle != null and blogTitle != ''">
+				AND blog_title like concat('%', #{blogTitle}, '%')
+			</if>
+			<if test="userId != null and userId != ''">
+				AND user_id = #{userId}
+			</if>
+			<if test="blogRemark != null and blogRemark != ''">
+				AND blog_remark like concat('%', #{blogRemark}, '%')
+			</if>
+		</where>
+    </select>
+    
+    <select id="checkBlogKeyUnique" parameterType="String" resultMap="SysBlogResult">
+        <include refid="selectBlogVo"/>
+        where blog_remark = #{blogRemark}
+    </select>
+    
+    <insert id="insertBlog" parameterType="SysBlog">
+        insert into sys_blog (
+			<if test="blogTitle != null and blogTitle != '' ">blog_title,</if>
+			<if test="blogRemark != null and blogRemark != '' ">blog_remark,</if>
+			<if test="blogContent != null and blogContent != '' ">blog_content,</if>
+            <if test="blogType != null and blogType != '' ">blog_type,</if>
+            <if test="blogUrl != null and blogUrl != '' ">blog_url,</if>
+			<if test="userId != null and userId != '' ">user_id,</if>
+			<if test="createBy != null and createBy != ''">create_by,</if>
+			<if test="remark != null and remark != ''">remark,</if>
+ 			create_time
+        )value (
+			<if test="blogTitle != null and blogTitle != ''">#{blogTitle},</if>
+			<if test="blogRemark != null and blogRemark != ''">#{blogRemark},</if>
+			<if test="blogContent != null and blogContent != ''">#{blogContent},</if>
+            <if test="blogType != null and blogType != '' ">#{blogType},</if>
+            <if test="blogUrl != null and blogUrl != '' ">#{blogUrl},</if>
+			<if test="userId != null and userId != ''">#{userId},</if>
+			<if test="createBy != null and createBy != ''">#{createBy},</if>
+			<if test="remark != null and remark != ''">#{remark},</if>
+ 			now()
+		)
+    </insert>
+	 
+    <update id="updateBlog" parameterType="SysBlog">
+        update sys_blog
+        <set>
+            <if test="blogTitle != null and blogTitle != ''">blog_title = #{blogTitle},</if>
+            <if test="blogRemark != null and blogRemark != ''">blog_remark = #{blogRemark},</if>
+            <if test="blogContent != null and blogContent != ''">blog_content = #{blogContent},</if>
+            <if test="blogType != null and blogType != '' ">blog_type = #{blogType},</if>
+            <if test="blogUrl != null and blogUrl != '' ">blog_url = #{blogUrl},</if>
+            <if test="userId != null and userId != ''">user_id = #{userId},</if>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+ 			update_time = now()
+        </set>
+        where blog_id = #{blogId}
+    </update>
+	
+    <delete id="deleteBlogByIds" parameterType="SysBlog">
+        delete from sys_blog where blog_id in (${blogId})
+    </delete>
+    
+</mapper>
