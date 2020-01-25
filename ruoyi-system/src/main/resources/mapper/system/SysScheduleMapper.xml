@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysScheduleMapper">
+    
+    <resultMap type="SysSchedule" id="SysScheduleResult">
+    	<id     property="scheduleId"      column="schedule_id"      />
+        <result property="scheduleName"    column="schedule_name"    />
+        <result property="scheduleDesc"     column="schedule_desc"     />
+        <result property="scheduleType"   column="schedule_type"   />
+        <result property="scheduleStatus"     column="schedule_status"     />
+        <result property="hasMessage"   column="is_message"   />
+        <result property="hasValid"    column="is_valid"    />
+        <result property="createBy"      column="create_by"      />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"      column="update_by"      />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+    
+    <sql id="selectScheduleVo">
+        select schedule_id, schedule_name, schedule_desc, schedule_type,schedule_status, is_message, is_valid, create_by, create_time, update_by, update_time, remark
+		from sys_schedule
+    </sql>
+    
+    <!-- 查询条件 -->
+	<sql id="sqlwhereSearch">
+		<where>
+			<if test="scheduleId !=null">
+				and schedule_id = #{scheduleId}
+			</if>
+			<if test="scheduleDesc !=null and scheduleDesc != ''">
+				and schedule_desc = #{scheduleDesc}
+			</if>
+            <if test="hasValid !=null and hasValid != ''">
+                and is_valid = #{hasValid}
+            </if>
+            <if test="scheduleName !=null and scheduleName != ''">
+                and schedule_name = #{scheduleName}
+            </if>
+		</where>
+	</sql>
+    
+    <select id="selectSchedule" parameterType="SysSchedule" resultMap="SysScheduleResult">
+        <include refid="selectScheduleVo"/>
+        <include refid="sqlwhereSearch"/>
+    </select>
+    
+    <select id="selectScheduleList" parameterType="SysSchedule" resultMap="SysScheduleResult">
+        <include refid="selectScheduleVo"/>
+        <where>
+			<if test="scheduleName != null and scheduleName != ''">
+				AND schedule_name like concat('%', #{scheduleName}, '%')
+			</if>
+			<if test="hasValid != null and hasValid != ''">
+				AND is_valid = #{hasValid}
+			</if>
+			<if test="scheduleDesc != null and scheduleDesc != ''">
+				AND schedule_desc like concat('%', #{scheduleDesc}, '%')
+			</if>
+		</where>
+    </select>
+    
+    <select id="checkScheduleKeyUnique" parameterType="String" resultMap="SysScheduleResult">
+        <include refid="selectScheduleVo"/>
+        where schedule_desc = #{scheduleDesc}
+    </select>
+    
+    <insert id="insertSchedule" parameterType="SysSchedule">
+        insert into sys_schedule (
+			<if test="scheduleName != null and scheduleName != '' ">schedule_name,</if>
+			<if test="scheduleDesc != null and scheduleDesc != '' ">schedule_desc,</if>
+			<if test="scheduleType != null and scheduleType != '' ">schedule_type,</if>
+            <if test="scheduleStatus != null and scheduleStatus != '' ">schedule_status,</if>
+            <if test="hasMessage != null and hasMessage != '' ">is_message,</if>
+			<if test="hasValid != null and hasValid != '' ">is_valid,</if>
+			<if test="createBy != null and createBy != ''">create_by,</if>
+			<if test="remark != null and remark != ''">remark,</if>
+ 			create_time
+        )value (
+			<if test="scheduleName != null and scheduleName != ''">#{scheduleName},</if>
+			<if test="scheduleDesc != null and scheduleDesc != ''">#{scheduleDesc},</if>
+			<if test="scheduleType != null and scheduleType != ''">#{scheduleType},</if>
+            <if test="scheduleStatus != null and scheduleStatus != '' ">#{scheduleStatus},</if>
+            <if test="hasMessage != null and hasMessage != '' ">#{hasMessage},</if>
+			<if test="hasValid != null and hasValid != ''">#{hasValid},</if>
+			<if test="createBy != null and createBy != ''">#{createBy},</if>
+			<if test="remark != null and remark != ''">#{remark},</if>
+ 			now()
+		)
+    </insert>
+	 
+    <update id="updateSchedule" parameterType="SysSchedule">
+        update sys_schedule
+        <set>
+            <if test="scheduleName != null and scheduleName != ''">schedule_name = #{scheduleName},</if>
+            <if test="scheduleDesc != null and scheduleDesc != ''">schedule_desc = #{scheduleDesc},</if>
+            <if test="scheduleType != null and scheduleType != ''">schedule_type = #{scheduleType},</if>
+            <if test="scheduleStatus != null and scheduleStatus != '' ">schedule_status = #{scheduleStatus},</if>
+            <if test="hasMessage != null and hasMessage != '' ">is_message = #{hasMessage},</if>
+            <if test="hasValid != null and hasValid != ''">is_valid = #{hasValid},</if>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+ 			update_time = now()
+        </set>
+        where schedule_id = #{scheduleId}
+    </update>
+	
+    <delete id="deleteScheduleByIds" parameterType="SysSchedule">
+        delete from sys_schedule where schedule_id in (${scheduleId})
+    </delete>
+    
+</mapper>

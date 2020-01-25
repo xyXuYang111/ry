@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysFileInfoMapper">
+
+	<resultMap type="SysFileInfo" id="SysFileInfoResult">
+		<id     property="fileId"     column="file_id"     />
+		<result property="fileName"   column="file_name"   />
+		<result property="fileTitle"  column="file_title"   />
+		<result property="fileUrl"   column="file_url"   />
+		<result property="fileTypeId"   column="file_type_id"   />
+		<result property="typeName"   column="type_name"   />
+		<result property="remark"   column="remark"   />
+		<result property="createBy"   column="create_by"   />
+		<result property="createTime" column="create_time" />
+		<result property="updateBy"   column="update_by"   />
+		<result property="updateTime" column="update_time" />
+	</resultMap>
+
+	<sql id="base_sql">
+		t.file_id,t.file_name,t.file_title,t.file_url,t.file_type_id,t.remark,t.create_by,t.create_time,
+		(select p.type_name from sys_file_type p where t.file_type_id = p.file_type_id) as type_name
+	</sql>
+
+	<select id="selectFileInfo" parameterType="SysFileInfo" resultMap="SysFileInfoResult">
+		select <include refid="base_sql"/>
+		from sys_file t where t.file_id = #{fileId}
+	</select>
+
+	<select id="selectFileList" parameterType="SysFileInfo" resultMap="SysFileInfoResult">
+		select <include refid="base_sql"/>
+		from sys_file t
+		<trim prefixOverrides="and" prefix="where">
+			<if test="fileTitle != null and fileTitle != ''">
+				and file_title = #{fileTitle}
+			</if>
+			<if test="fileTypeId != null and fileTypeId != ''">
+				and file_type_id in (${fileTypeId})
+			</if>
+		</trim>
+	</select>
+
+	<insert id="insertFile" parameterType="SysFileInfo">
+		insert into sys_file(file_name,file_title,file_url,file_type_id,remark,create_by,create_time)
+		value(#{fileName},#{fileTitle},#{fileUrl},#{fileTypeId},#{remark},#{createBy},now())
+	</insert>
+
+	<update id="updateFile" parameterType="SysFileInfo">
+		update sys_file set
+		file_name = #{fileName},
+		file_title = #{fileTitle},
+		file_url = #{fileUrl},
+	    file_type_id = #{fileTypeId},
+	    remark = #{remark},
+	    update_by = #{updateBy},
+	    update_time = now()
+	    where file_id = #{fileId}
+	</update>
+
+	<delete id="deleteFile" parameterType="SysFileInfo">
+		delete from sys_file  where file_id in (${fileId})
+	</delete>
+
+</mapper> 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
-	<th:block th:include="include :: header('岗位列表')" />
+	<th:block th:include="include :: header('办理列表')" />
 </head>
 <body class="gray-bg">
 	<div class="container-div">
@@ -11,13 +11,13 @@
 					<div class="select-list">
 						<ul>
 							<li>
-								岗位编码：<input type="text" name="postCode"/>
+								处理名称：<input type="text" name="scheduleName"/>
 							</li>
 							<li>
-								岗位名称：<input type="text" name="postName"/>
+								处理类型：<input type="text" name="scheduleType"/>
 							</li>
 							<li>
-								岗位状态：<select name="status" th:with="type=${@dict.getType('sys_normal_disable')}">
+								处理状态：<select name="status" th:with="type=${@dict.getType('sys_schedule')}">
 									<option value="">所有</option>
 									<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
 								</select>
@@ -32,16 +32,16 @@
 			</div>
 			
 			<div class="btn-group-sm" id="toolbar" role="group">
-				<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:post:add">
+				<a class="btn btn-success" onclick="$.operate.addFull()" shiro:hasPermission="system:schedule:add">
 	                <i class="fa fa-plus"></i> 新增
 	            </a>
-				<a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="system:post:edit">
+				<a class="btn btn-primary single disabled" onclick="$.operate.editFull()" shiro:hasPermission="system:schedule:edit">
 		            <i class="fa fa-edit"></i> 修改
 		        </a>
-				<a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:post:remove">
+				<a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:schedule:remove">
 		            <i class="fa fa-remove"></i> 删除
 		        </a>
-				<a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:post:export">
+				<a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:schedule:export">
 		            <i class="fa fa-download"></i> 导出
 		        </a>
 	        </div>
@@ -53,10 +53,10 @@
 	</div>
 	<th:block th:include="include :: footer" />
 	<script th:inline="javascript">
-		var editFlag = [[${@permission.hasPermi('system:post:edit')}]];
-		var removeFlag = [[${@permission.hasPermi('system:post:remove')}]];
-		var datas = [[${@dict.getType('sys_normal_disable')}]];
-		var prefix = ctx + "system/post";
+		var editFlag = [[${@permission.hasPermi('system:schedule:edit')}]];
+		var removeFlag = [[${@permission.hasPermi('system:schedule:remove')}]];
+		var datas = [[${@dict.getType('sys_schedule')}]];
+		var prefix = ctx + "system/schedule";
 
 		$(function() {
 		    var options = {
@@ -65,38 +65,33 @@
 		        updateUrl: prefix + "/edit/{id}",
 		        removeUrl: prefix + "/remove",
 		        exportUrl: prefix + "/export",
-		        sortName: "postSort",
-		        modalName: "岗位",
+		        sortName: "createTime",
+		        modalName: "处理",
 		        columns: [{
 		            checkbox: true
 		        },
 		        {
-		            field: 'postId',
-		            title: '岗位编号'
-		        },
-		        {
-		            field: 'postCode',
-		            title: '岗位编码',
+		            field: 'scheduleName',
+		            title: '处理名称',
 		            sortable: true
 		        },
-		        {
-		            field: 'postName',
-		            title: '岗位名称',
-		            sortable: true
-		        },
-		        {
-		            field: 'postSort',
-		            title: '显示顺序',
-		            sortable: true
-		        },
-		        {
-		            field: 'status',
-		            title: '状态',
-		            align: 'center',
-		            formatter: function(value, row, index) {
-		            	return $.table.selectDictLabel(datas, value);
-		            }
-		        },
+				{
+					field: 'scheduleDesc',
+					title: '处理描述'
+				},
+				{
+					field: 'scheduleStatus',
+					title: '处理状态',
+					align: 'center',
+					formatter: function(value, row, index) {
+						return $.table.selectDictLabel(datas, value);
+					}
+				},
+				{
+					field: 'remark',
+					title: '备注',
+					sortable: true
+				},
 		        {
 		            field: 'createTime',
 		            title: '创建时间',
@@ -107,8 +102,8 @@
 		            align: 'center',
 		            formatter: function(value, row, index) {
 		                var actions = [];
-		                actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.postId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
-		                actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.postId + '\')"><i class="fa fa-remove"></i>删除</a>');
+		                actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.editFull(\'' + row.scheduleId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+		                actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.scheduleId + '\')"><i class="fa fa-remove"></i>删除</a>');
 		                return actions.join('');
 		            }
 		        }]

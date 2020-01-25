@@ -48,7 +48,7 @@ public class SysBlogController extends BaseController {
     @RequiresPermissions("system:blog:list")
     @PostMapping("/list")
     @ResponseBody
-    public TableDataInfo list(SysBlog sysBlog)
+    public TableDataInfo list(SysBlog sysBlog, Model model)
     {
         startPage();
         List<SysBlog> list = sysBlogService.selectBlogList(sysBlog);
