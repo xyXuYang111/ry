@@ -2,6 +2,7 @@ package com.ruoyi.system.domain;
 
 import com.ruoyi.common.core.domain.BaseEntity;
 import lombok.Data;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 /**
  * @Auther: xuyang
@@ -26,4 +27,8 @@ public class SysFileInfo extends BaseEntity {
     private String typeName;
 
     private String remark;
+
+    private String orderNum;
+
+    private CommonsMultipartFile file;
 }

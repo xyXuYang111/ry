@@ -12,6 +12,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="fileTypeId"   column="file_type_id"   />
 		<result property="typeName"   column="type_name"   />
 		<result property="remark"   column="remark"   />
+		<result property="orderNum"   column="order_num"   />
 		<result property="createBy"   column="create_by"   />
 		<result property="createTime" column="create_time" />
 		<result property="updateBy"   column="update_by"   />
@@ -19,7 +20,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 
 	<sql id="base_sql">
-		t.file_id,t.file_name,t.file_title,t.file_url,t.file_type_id,t.remark,t.create_by,t.create_time,
+		t.file_id,t.file_name,t.file_title,t.file_url,t.file_type_id,t.remark,t.order_num,t.create_by,t.create_time,
 		(select p.type_name from sys_file_type p where t.file_type_id = p.file_type_id) as type_name
 	</sql>
 
@@ -42,8 +43,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<insert id="insertFile" parameterType="SysFileInfo">
-		insert into sys_file(file_name,file_title,file_url,file_type_id,remark,create_by,create_time)
-		value(#{fileName},#{fileTitle},#{fileUrl},#{fileTypeId},#{remark},#{createBy},now())
+		insert into sys_file(file_name,file_title,file_url,file_type_id,remark,order_num,create_by,create_time)
+		value(#{fileName},#{fileTitle},#{fileUrl},#{fileTypeId},#{remark},#{orderNum},#{createBy},now())
 	</insert>
 
 	<update id="updateFile" parameterType="SysFileInfo">
@@ -53,6 +54,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		file_url = #{fileUrl},
 	    file_type_id = #{fileTypeId},
 	    remark = #{remark},
+	    order_num = #{orderNum},
 	    update_by = #{updateBy},
 	    update_time = now()
 	    where file_id = #{fileId}

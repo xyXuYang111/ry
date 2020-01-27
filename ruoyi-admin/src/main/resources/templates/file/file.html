@@ -42,6 +42,7 @@
 									<input type="text" class="time-input" id="endTime" placeholder="结束时间" name="endTime"/>
 								</li>
 								<li>
+									<input type="hidden" id="fileTypeId" name="fileTypeId"/>
 									<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
 								    <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
 								</li>
@@ -113,8 +114,8 @@
 						sortable: true
 					},
 					{
-						field: 'fileUrl',
-						title: '文件路径',
+						field: 'orderNum',
+						title: '顺序',
 						sortable: true
 					},
 					{
@@ -153,7 +154,6 @@
 			
 			function zOnClick(event, treeId, treeNode) {
 				$("#fileTypeId").val(treeNode.id);
-				$("#parentId").val(treeNode.pId);
 				$.table.search();
 			}
 		}
