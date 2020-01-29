@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysEmailMapper">
+    
+    <resultMap type="SysEmail" id="SysEmailResult">
+    	<id     property="emailId"      column="email_id"      />
+
+        <result property="titleName"    column="title_name"    />
+        <result property="message"     column="message"     />
+        <result property="status"   column="status"   />
+        <result property="emailType"   column="email_type"   />
+
+        <result property="sendName"     column="send_name"     />
+        <result property="sendNumber"   column="send_number"   />
+        <result property="sendPassword"   column="send_password"   />
+
+        <result property="receiveName"     column="receive_name"     />
+        <result property="receiveNumber"   column="receive_number"   />
+        <result property="receivePassword"   column="receive_password"   />
+
+        <result property="createBy"      column="create_by"      />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"      column="update_by"      />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+    
+    <sql id="selectEmailVo">
+        select email_id, title_name, message, status, create_by, create_time, update_by, update_time, remark, email_type,
+        send_name, send_number, send_password, receive_name, receive_number, receive_password
+		from sys_email
+    </sql>
+    
+    <!-- 查询条件 -->
+	<sql id="sqlwhereSearch">
+		<where>
+			<if test="emailId !=null">
+				and email_id = #{emailId}
+			</if>
+			<if test="message !=null and message != ''">
+				and message = #{message}
+			</if>
+            <if test="titleName !=null and titleName != ''">
+                and title_name = #{titleName}
+            </if>
+		</where>
+	</sql>
+    
+    <select id="selectEmail" parameterType="SysEmail" resultMap="SysEmailResult">
+        <include refid="selectEmailVo"/>
+        <include refid="sqlwhereSearch"/>
+    </select>
+    
+    <select id="selectEmailList" parameterType="SysEmail" resultMap="SysEmailResult">
+        <include refid="selectEmailVo"/>
+        <where>
+			<if test="titleName != null and titleName != ''">
+				AND title_name like concat('%', #{titleName}, '%')
+			</if>
+			<if test="message != null and message != ''">
+				AND message like concat('%', #{message}, '%')
+			</if>
+		</where>
+    </select>
+    
+    <select id="checkEmailKeyUnique" parameterType="String" resultMap="SysEmailResult">
+        <include refid="selectEmailVo"/>
+        where message = #{message}
+    </select>
+    
+    <insert id="insertEmail" parameterType="SysEmail">
+        insert into sys_email (
+			<if test="titleName != null and titleName != '' ">title_name,</if>
+			<if test="message != null and message != '' ">message,</if>
+			status,
+            <if test="emailType != null and emailType != '' ">email_type,</if>
+
+            <if test="sendName != null and sendName != '' ">send_name,</if>
+            <if test="sendNumber != null and sendNumber != '' ">send_number,</if>
+            <if test="sendPassword != null and sendPassword != '' ">send_password,</if>
+
+            <if test="receiveName != null and receiveName != '' ">receive_name,</if>
+            <if test="receiveNumber != null and receiveNumber != '' ">receive_number,</if>
+            <if test="receivePassword != null and receivePassword != '' ">receive_password,</if>
+
+			<if test="createBy != null and createBy != ''">create_by,</if>
+			<if test="remark != null and remark != ''">remark,</if>
+ 			create_time
+        )value (
+			<if test="titleName != null and titleName != ''">#{titleName},</if>
+			<if test="message != null and message != ''">#{message},</if>
+			0,
+            <if test="emailType != null and emailType != '' ">#{emailType},</if>
+
+            <if test="sendName != null and sendName != '' ">#{sendName},</if>
+            <if test="sendNumber != null and sendNumber != '' ">#{sendNumber},</if>
+            <if test="sendPassword != null and sendPassword != '' ">#{sendPassword},</if>
+
+            <if test="receiveName != null and receiveName != '' ">#{receiveName},</if>
+            <if test="receiveNumber != null and receiveNumber != '' ">#{receiveNumber},</if>
+            <if test="receivePassword != null and sendPassword != '' ">#{receivePassword},</if>
+
+			<if test="createBy != null and createBy != ''">#{createBy},</if>
+			<if test="remark != null and remark != ''">#{remark},</if>
+ 			now()
+		)
+    </insert>
+	 
+    <update id="updateEmail" parameterType="SysEmail">
+        update sys_email
+        <set>
+            <if test="titleName != null and titleName != ''">title_name = #{titleName},</if>
+            <if test="message != null and message != ''">message = #{message},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="emailType != null and emailType != '' ">email_type = #{emailType},</if>
+
+            <if test="sendName != null and sendName != '' ">send_name = #{sendName},</if>
+            <if test="sendNumber != null and sendNumber != '' ">send_number = #{sendNumber},</if>
+            <if test="sendPassword != null and sendPassword != '' ">send_password = #{sendPassword},</if>
+
+            <if test="receiveName != null and receiveName != '' ">receive_name = #{receiveName},</if>
+            <if test="receiveNumber != null and receiveNumber != '' ">receive_number = #{receiveNumber},</if>
+            <if test="receivePassword != null and receivePassword != '' ">receive_password = #{receivePassword},</if>
+            
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+ 			update_time = now()
+        </set>
+        where email_id = #{emailId}
+    </update>
+	
+    <delete id="deleteEmailByIds" parameterType="SysEmail">
+        delete from sys_email where email_id in (${emailId})
+    </delete>
+    
+</mapper>

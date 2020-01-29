@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysDailyMapper">
+    
+    <resultMap type="SysDaily" id="SysDailyResult">
+    	<id     property="dailyId"      column="daily_id"      />
+        <result property="dailyName"    column="daily_name"    />
+        <result property="dailyContent"     column="daily_content"     />
+        <result property="weather"   column="weather"   />
+        <result property="createBy"      column="create_by"      />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"      column="update_by"      />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+    
+    <sql id="selectDailyVo">
+        select daily_id, daily_name, daily_content, weather, create_by, create_time, update_by, update_time, remark
+		from sys_daily
+    </sql>
+    
+    <!-- 查询条件 -->
+	<sql id="sqlwhereSearch">
+		<where>
+			<if test="dailyId !=null">
+				and daily_id = #{dailyId}
+			</if>
+			<if test="dailyContent !=null and dailyContent != ''">
+				and daily_content = #{dailyContent}
+			</if>
+            <if test="dailyName !=null and dailyName != ''">
+                and daily_name = #{dailyName}
+            </if>
+		</where>
+	</sql>
+    
+    <select id="selectDaily" parameterType="SysDaily" resultMap="SysDailyResult">
+        <include refid="selectDailyVo"/>
+        <include refid="sqlwhereSearch"/>
+    </select>
+    
+    <select id="selectDailyList" parameterType="SysDaily" resultMap="SysDailyResult">
+        <include refid="selectDailyVo"/>
+        <where>
+			<if test="dailyName != null and dailyName != ''">
+				AND daily_name like concat('%', #{dailyName}, '%')
+			</if>
+			<if test="dailyContent != null and dailyContent != ''">
+				AND daily_content like concat('%', #{dailyContent}, '%')
+			</if>
+		</where>
+    </select>
+    
+    <select id="checkDailyKeyUnique" parameterType="String" resultMap="SysDailyResult">
+        <include refid="selectDailyVo"/>
+        where daily_content = #{dailyContent}
+    </select>
+    
+    <insert id="insertDaily" parameterType="SysDaily">
+        insert into sys_daily (
+			<if test="dailyName != null and dailyName != '' ">daily_name,</if>
+			<if test="dailyContent != null and dailyContent != '' ">daily_content,</if>
+			<if test="weather != null and weather != '' ">weather,</if>
+			<if test="createBy != null and createBy != ''">create_by,</if>
+			<if test="remark != null and remark != ''">remark,</if>
+ 			create_time
+        )value (
+			<if test="dailyName != null and dailyName != ''">#{dailyName},</if>
+			<if test="dailyContent != null and dailyContent != ''">#{dailyContent},</if>
+			<if test="weather != null and weather != ''">#{weather},</if>
+			<if test="createBy != null and createBy != ''">#{createBy},</if>
+			<if test="remark != null and remark != ''">#{remark},</if>
+ 			now()
+		)
+    </insert>
+	 
+    <update id="updateDaily" parameterType="SysDaily">
+        update sys_daily
+        <set>
+            <if test="dailyName != null and dailyName != ''">daily_name = #{dailyName},</if>
+            <if test="dailyContent != null and dailyContent != ''">daily_content = #{dailyContent},</if>
+            <if test="weather != null and weather != ''">weather = #{weather},</if>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+ 			update_time = now()
+        </set>
+        where daily_id = #{dailyId}
+    </update>
+	
+    <delete id="deleteDailyByIds" parameterType="SysDaily">
+        delete from sys_daily where daily_id in (${dailyId})
+    </delete>
+    
+</mapper>

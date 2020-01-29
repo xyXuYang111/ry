@@ -33,6 +33,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="scheduleDesc !=null and scheduleDesc != ''">
 				and schedule_desc = #{scheduleDesc}
 			</if>
+            <if test="scheduleStatus !=null and scheduleStatus != ''">
+                and schedule_status = #{scheduleStatus}
+            </if>
             <if test="hasValid !=null and hasValid != ''">
                 and is_valid = #{hasValid}
             </if>
@@ -56,6 +59,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="hasValid != null and hasValid != ''">
 				AND is_valid = #{hasValid}
 			</if>
+            <if test="scheduleStatus !=null and scheduleStatus != ''">
+                and schedule_status = #{scheduleStatus}
+            </if>
 			<if test="scheduleDesc != null and scheduleDesc != ''">
 				AND schedule_desc like concat('%', #{scheduleDesc}, '%')
 			</if>

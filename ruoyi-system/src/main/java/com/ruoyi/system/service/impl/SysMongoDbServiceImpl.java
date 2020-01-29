@@ -3,7 +3,6 @@ package com.ruoyi.system.service.impl;
 import com.ruoyi.system.dao.SysMongoDbRepository;
 import com.ruoyi.system.domain.SysMongoDb;
 import com.ruoyi.system.service.SysMongoDbService;
-import org.apache.poi.ss.usermodel.Picture;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

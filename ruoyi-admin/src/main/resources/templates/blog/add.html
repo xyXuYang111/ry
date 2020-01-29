@@ -16,7 +16,9 @@
 		<div class="form-group">
 			<label class="col-sm-2 control-label">博客类型：</label>
 			<div class="col-sm-10">
-				<input id="blogType" name="blogType" class="form-control" type="text" required>
+				<input id="treeId" name="blogTypeId" type="hidden" value="1"/>
+				<input class="form-control" type="text" name="blogType" onclick="selectBlogTypeTree()" id="treeName" readonly="true">
+				<span class="input-group-addon"><i class="fa fa-search"></i></span>
 			</div>
 		</div>
 		<div class="form-group">
@@ -46,12 +48,32 @@
 				<div id="remarkSummernote" class="summernote"></div>
 			</div>
 		</div>
+
+		<div class="row">
+			<div class="col-sm-offset-5 col-sm-10">
+				<button type="button" class="btn btn-sm btn-primary" onclick="submitHandler()"><i class="fa fa-check"></i>保 存</button>&nbsp;
+				<button type="button" class="btn btn-sm btn-danger" onclick="closeItem()"><i class="fa fa-reply-all"></i>关 闭 </button>
+			</div>
+		</div>
 	</form>
 </div>
 <th:block th:include="include :: footer" />
 <th:block th:include="include :: summernote-js" />
 <script type="text/javascript">
 	var prefix = ctx + "system/blog";
+
+	var prefix2 = ctx + "system/blogType";
+
+	$(function() {
+		var blogRemark = $("#blogRemark").val();
+		$('#blogRemarkSummernote').summernote('code', blogRemark);
+
+		var blogContent = $("#blogContent").val();
+		$('#blogContentSummernote').summernote('code', blogContent);
+
+		var remark = $("#remark").val();
+		$('#remarkSummernote').summernote('code', remark);
+	});
 
 	$('.summernote').summernote({
 		placeholder: '请输入博客内容',
@@ -93,6 +115,24 @@
 	$("#form-blog-add").validate({
 		focusCleanup: true
 	});
+
+	/*部门管理-新增-选择父部门树*/
+	function selectBlogTypeTree() {
+		var options = {
+			title: '类型选择',
+			width: "380",
+			url: prefix2 + "/selectBlogTypeTree/" + $("#treeId").val(),
+			callBack: doSubmit
+		};
+		$.modal.openOptions(options);
+	}
+
+	function doSubmit(index, layero){
+		var body = layer.getChildFrame('body', index);
+		$("#treeId").val(body.find('#treeId').val());
+		$("#treeName").val(body.find('#treeName').val());
+		layer.close(index);
+	}
 
 	function submitHandler() {
 		if ($.validate.form()) {

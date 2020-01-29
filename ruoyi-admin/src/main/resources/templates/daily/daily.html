@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
-	<th:block th:include="include :: header('mongo列表')" />
+	<th:block th:include="include :: header('日志列表')" />
 </head>
 <body class="gray-bg">
 	<div class="container-div">
@@ -11,10 +11,7 @@
 					<div class="select-list">
 						<ul>
 							<li>
-								处理名称：<input type="text" name="name"/>
-							</li>
-							<li>
-								处理类型：<input type="text" name="title"/>
+								日志名称：<input type="text" name="dailyName"/>
 							</li>
 							<li>
 								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
@@ -26,16 +23,16 @@
 			</div>
 			
 			<div class="btn-group-sm" id="toolbar" role="group">
-				<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="system:mongoDb:add">
+				<a class="btn btn-success" onclick="$.operate.addFull()" shiro:hasPermission="system:daily:add">
 	                <i class="fa fa-plus"></i> 新增
 	            </a>
-				<a class="btn btn-primary single disabled" onclick="$.operate.edit()" shiro:hasPermission="system:mongoDb:edit">
+				<a class="btn btn-primary single disabled" onclick="$.operate.editFull()" shiro:hasPermission="system:daily:edit">
 		            <i class="fa fa-edit"></i> 修改
 		        </a>
-				<a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:mongoDb:remove">
+				<a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:daily:remove">
 		            <i class="fa fa-remove"></i> 删除
 		        </a>
-				<a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:mongoDb:export">
+				<a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:daily:export">
 		            <i class="fa fa-download"></i> 导出
 		        </a>
 	        </div>
@@ -47,9 +44,9 @@
 	</div>
 	<th:block th:include="include :: footer" />
 	<script th:inline="javascript">
-		var editFlag = [[${@permission.hasPermi('system:mongoDb:edit')}]];
-		var removeFlag = [[${@permission.hasPermi('system:mongoDb:remove')}]];
-		var prefix = ctx + "system/mongoDb";
+		var editFlag = [[${@permission.hasPermi('system:daily:edit')}]];
+		var removeFlag = [[${@permission.hasPermi('system:daily:remove')}]];
+		var prefix = ctx + "system/daily";
 
 		$(function() {
 		    var options = {
@@ -59,26 +56,26 @@
 		        removeUrl: prefix + "/remove",
 		        exportUrl: prefix + "/export",
 		        sortName: "createTime",
-		        modalName: "mongo",
+		        modalName: "日志",
 		        columns: [{
 		            checkbox: true
 		        },
 		        {
-		            field: 'name',
-		            title: '名称',
+		            field: 'dailyName',
+		            title: '日志名称',
 		            sortable: true
 		        },
 				{
-					field: 'title',
-					title: '描述'
+					field: 'weather',
+					title: '天气'
 				},
 				{
-					field: 'size',
-					title: '大小'
+					field: 'dailyContent',
+					title: '日志内容'
 				},
 				{
-					field: 'url',
-					title: '路径',
+					field: 'remark',
+					title: '备注',
 					sortable: true
 				},
 		        {
@@ -91,8 +88,8 @@
 		            align: 'center',
 		            formatter: function(value, row, index) {
 		                var actions = [];
-		                actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.editFull(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
-		                actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+		                actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.editFull(\'' + row.dailyId + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+		                actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.dailyId + '\')"><i class="fa fa-remove"></i>删除</a>');
 		                return actions.join('');
 		            }
 		        }]
