@@ -5,6 +5,7 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.system.code.QRCodeUtil;
 import com.ruoyi.system.domain.SysAccount;
 import com.ruoyi.system.service.SysAccountService;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +16,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.util.List;
 
 /**
@@ -110,5 +114,56 @@ public class SysAccountController extends BaseController {
         sysAccount.setAccountId(ids);
         sysAccountService.deleteAccountByIds(sysAccount);
         return toAjax(1);
+    }
+
+    @Log(title = "博客管理", businessType = BusinessType.INSERT)
+    @GetMapping(value="/code")
+    public void showPic(HttpServletResponse response, @Validated String ids){
+
+        SysAccount sysAccount = new SysAccount();
+        sysAccount.setAccountId(ids);
+        SysAccount sysAccountInfo = sysAccountService.selectAccount(sysAccount);
+
+        //本地生成二维码
+        String fileUrl= QRCodeUtil.createQrCodePhoto(sysAccountInfo.toString());
+
+        File file = new File(fileUrl);
+
+        response.setContentType("application/force-download");// 设置强制下载不打开
+        response.addHeader("Content-Disposition",
+                "attachment;fileName=" + file.getName());// 设置文件名
+        byte[] buffer = new byte[1024];
+        FileInputStream fis = null;
+        BufferedInputStream bis = null;
+        try {
+            fis = new FileInputStream(file);
+            bis = new BufferedInputStream(fis);
+            OutputStream os = response.getOutputStream();
+            int i = bis.read(buffer);
+            while (i != -1) {
+                os.write(buffer, 0, i);
+                i = bis.read(buffer);
+            }
+        } catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+        } finally {
+            if (bis != null) {
+                try {
+                    bis.close();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+            if (fis != null) {
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }

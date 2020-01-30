@@ -19,7 +19,7 @@ public class TableSupport
         pageDomain.setPageNum(ServletUtils.getParameterToInt(Constants.PAGE_NUM));
         pageDomain.setPageSize(ServletUtils.getParameterToInt(Constants.PAGE_SIZE));
         pageDomain.setOrderByColumn(ServletUtils.getParameter(Constants.ORDER_BY_COLUMN));
-        pageDomain.setIsAsc(ServletUtils.getParameter(Constants.IS_ASC));
+        pageDomain.setIsAsc("desc");
         return pageDomain;
     }
 

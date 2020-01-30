@@ -928,6 +928,19 @@ var table = {
             	});
             	
             },
+			// 生成二维码
+			code: function(id) {
+				table.set();
+				$.modal.confirm("生成二维码" + table.options.modalName + "吗？", function() {
+					var url = $.common.isEmpty(id) ? table.options.codeUrl : table.options.codeUrl.replace("{id}", id);
+					if(table.options.type == table_type.bootstrapTreeTable) {
+						$.operate.get(url);
+					} else {
+						var data = { "ids": id };
+						$.operate.submit(url, "post", "json", data);
+					}
+				});
+			},
 			// 发送信息
 			send: function(id) {
 				table.set();

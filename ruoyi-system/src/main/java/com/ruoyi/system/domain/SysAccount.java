@@ -2,6 +2,7 @@ package com.ruoyi.system.domain;
 
 import com.ruoyi.common.core.domain.BaseEntity;
 import lombok.Data;
+import lombok.ToString;
 
 /**
  * @Auther: xuyang
@@ -9,6 +10,7 @@ import lombok.Data;
  * @Description:
  */
 @Data
+@ToString
 public class SysAccount extends BaseEntity {
 
     private static final long serialVersionUID = 1092416681922599174L;

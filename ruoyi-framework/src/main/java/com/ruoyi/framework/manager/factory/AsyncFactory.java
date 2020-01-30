@@ -1,6 +1,9 @@
 package com.ruoyi.framework.manager.factory;
 
 import java.util.TimerTask;
+
+import com.ruoyi.framework.redis.RedisService;
+import com.ruoyi.framework.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.ruoyi.common.constant.Constants;
@@ -54,7 +57,6 @@ public class AsyncFactory
                 online.setOs(session.getOs());
                 online.setStatus(session.getStatus());
                 SpringUtils.getBean(ISysUserOnlineService.class).saveOnline(online);
-
             }
         };
     }
@@ -75,6 +77,9 @@ public class AsyncFactory
                 // 远程查询操作地点
                 operLog.setOperLocation(AddressUtils.getRealAddressByIP(operLog.getOperIp()));
                 SpringUtils.getBean(ISysOperLogService.class).insertOperlog(operLog);
+
+                //新增日志记录到redis中
+                SpringUtils.getBean(RedisService.class).put("REQUEST", DateUtil.getNowTime(), operLog);
             }
         };
     }
@@ -129,6 +134,9 @@ public class AsyncFactory
                 }
                 // 插入数据
                 SpringUtils.getBean(SysLogininforServiceImpl.class).insertLogininfor(logininfor);
+
+                //新增日志记录到redis中
+                SpringUtils.getBean(RedisService.class).put("LOGIN", DateUtil.getNowTime(), logininfor);
             }
         };
     }
