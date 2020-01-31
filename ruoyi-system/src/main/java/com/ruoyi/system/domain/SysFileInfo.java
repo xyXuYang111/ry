@@ -1,7 +1,9 @@
 package com.ruoyi.system.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ruoyi.common.core.domain.BaseEntity;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 /**
@@ -30,5 +32,6 @@ public class SysFileInfo extends BaseEntity {
 
     private String orderNum;
 
-    private CommonsMultipartFile file;
+    @JsonProperty(value = "file")
+    private MultipartFile file;
 }

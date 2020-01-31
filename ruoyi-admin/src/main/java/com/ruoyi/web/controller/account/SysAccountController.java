@@ -79,11 +79,10 @@ public class SysAccountController extends BaseController {
      * 新增保存岗位
      */
     @RequiresPermissions("system:account:add")
-    @Log(title = "博客管理", businessType = BusinessType.INSERT)
+    @Log(title = "账号管理", businessType = BusinessType.INSERT)
     @PostMapping("/add")
     @ResponseBody
     public AjaxResult addSave(@Validated SysAccount account) {
-        log.debug("新增博客记录");
         sysAccountService.insertAccount(account);
         return toAjax(1);
     }
@@ -92,7 +91,7 @@ public class SysAccountController extends BaseController {
      * 修改保存岗位
      */
     @RequiresPermissions("system:account:edit")
-    @Log(title = "博客管理", businessType = BusinessType.INSERT)
+    @Log(title = "账号管理", businessType = BusinessType.UPDATE)
     @PostMapping("/edit")
     @ResponseBody
     public AjaxResult editSave(@Validated SysAccount account) {
@@ -105,7 +104,7 @@ public class SysAccountController extends BaseController {
      * 修改保存岗位
      */
     @RequiresPermissions("system:account:remove")
-    @Log(title = "博客管理", businessType = BusinessType.INSERT)
+    @Log(title = "账号管理", businessType = BusinessType.DELETE)
     @PostMapping("/remove")
     @ResponseBody
     public AjaxResult remove(@Validated String ids) {
@@ -116,7 +115,7 @@ public class SysAccountController extends BaseController {
         return toAjax(1);
     }
 
-    @Log(title = "博客管理", businessType = BusinessType.INSERT)
+    @Log(title = "账号管理", businessType = BusinessType.OTHER)
     @GetMapping(value="/code")
     public void showPic(HttpServletResponse response, @Validated String ids){
 

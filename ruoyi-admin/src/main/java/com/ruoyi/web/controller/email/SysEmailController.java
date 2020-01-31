@@ -75,11 +75,10 @@ public class SysEmailController extends BaseController {
      * 新增保存岗位
      */
     @RequiresPermissions("system:email:add")
-    @Log(title = "博客管理", businessType = BusinessType.INSERT)
+    @Log(title = "邮件管理", businessType = BusinessType.INSERT)
     @PostMapping("/add")
     @ResponseBody
     public AjaxResult addSave(@Validated SysEmail email) {
-        log.debug("新增博客记录");
         sysEmailService.insertEmail(email);
         return toAjax(1);
     }
@@ -88,11 +87,10 @@ public class SysEmailController extends BaseController {
      * 修改保存岗位
      */
     @RequiresPermissions("system:email:edit")
-    @Log(title = "博客管理", businessType = BusinessType.INSERT)
+    @Log(title = "邮件管理", businessType = BusinessType.UPDATE)
     @PostMapping("/edit")
     @ResponseBody
     public AjaxResult editSave(@Validated SysEmail email) {
-        log.debug("修改博客记录");
         sysEmailService.updateEmail(email);
         return toAjax(1);
     }
@@ -101,11 +99,10 @@ public class SysEmailController extends BaseController {
      * 修改保存岗位
      */
     @RequiresPermissions("system:email:remove")
-    @Log(title = "博客管理", businessType = BusinessType.INSERT)
+    @Log(title = "邮件管理", businessType = BusinessType.DELETE)
     @PostMapping("/remove")
     @ResponseBody
     public AjaxResult remove(@Validated String ids) {
-        log.debug("删除博客记录");
         SysEmail sysEmail = new SysEmail();
         sysEmail.setEmailId(ids);
         sysEmailService.deleteEmailByIds(sysEmail);
@@ -116,7 +113,7 @@ public class SysEmailController extends BaseController {
      * 修改保存岗位
      */
     @RequiresPermissions("system:email:send")
-    @Log(title = "博客管理", businessType = BusinessType.INSERT)
+    @Log(title = "邮件管理", businessType = BusinessType.OTHER)
     @PostMapping("/send")
     @ResponseBody
     public AjaxResult send(@Validated String ids) {

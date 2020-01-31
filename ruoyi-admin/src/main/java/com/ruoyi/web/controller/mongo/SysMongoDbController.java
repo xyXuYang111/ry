@@ -81,7 +81,7 @@ public class SysMongoDbController extends BaseController {
      * 新增保存岗位
      */
     @RequiresPermissions("system:mongoDb:add")
-    @Log(title = "博客管理", businessType = BusinessType.INSERT)
+    @Log(title = "mongo管理", businessType = BusinessType.INSERT)
     @PostMapping("/add")
     @ResponseBody
     public AjaxResult addSave(@Validated SysMongoDb mongoDb) {
@@ -94,7 +94,7 @@ public class SysMongoDbController extends BaseController {
      * 修改保存岗位
      */
     @RequiresPermissions("system:mongoDb:edit")
-    @Log(title = "博客管理", businessType = BusinessType.INSERT)
+    @Log(title = "mongo管理", businessType = BusinessType.UPDATE)
     @PostMapping("/edit")
     @ResponseBody
     public AjaxResult editSave(@Validated SysMongoDb mongoDb) {
@@ -107,7 +107,7 @@ public class SysMongoDbController extends BaseController {
      * 修改保存岗位
      */
     @RequiresPermissions("system:mongoDb:remove")
-    @Log(title = "博客管理", businessType = BusinessType.INSERT)
+    @Log(title = "mongo管理", businessType = BusinessType.DELETE)
     @PostMapping("/remove")
     @ResponseBody
     public AjaxResult remove(@Validated String ids) {

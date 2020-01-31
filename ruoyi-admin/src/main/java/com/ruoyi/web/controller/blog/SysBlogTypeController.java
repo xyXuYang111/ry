@@ -86,7 +86,7 @@ public class SysBlogTypeController extends BaseController {
     /**
      * 新增保存部门
      */
-    @Log(title = "类型管理", businessType = BusinessType.INSERT)
+    @Log(title = "博客类型管理", businessType = BusinessType.INSERT)
     @RequiresPermissions("system:blogType:add")
     @PostMapping("/add")
     @ResponseBody
@@ -110,7 +110,7 @@ public class SysBlogTypeController extends BaseController {
     /**
      * 保存
      */
-    @Log(title = "类型管理", businessType = BusinessType.UPDATE)
+    @Log(title = "博客类型管理", businessType = BusinessType.UPDATE)
     @RequiresPermissions("system:blogType:edit")
     @PostMapping("/edit")
     @ResponseBody
@@ -124,7 +124,7 @@ public class SysBlogTypeController extends BaseController {
     /**
      * 保存
      */
-    @Log(title = "类型管理", businessType = BusinessType.UPDATE)
+    @Log(title = "博客类型管理", businessType = BusinessType.DELETE)
     @RequiresPermissions("system:blogType:remove")
     @GetMapping("/remove/{blogTypeId}")
     @ResponseBody

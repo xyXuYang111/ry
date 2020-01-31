@@ -75,7 +75,7 @@ public class SysDailyController extends BaseController {
      * 新增保存岗位
      */
     @RequiresPermissions("system:daily:add")
-    @Log(title = "博客管理", businessType = BusinessType.INSERT)
+    @Log(title = "日记管理", businessType = BusinessType.INSERT)
     @PostMapping("/add")
     @ResponseBody
     public AjaxResult addSave(@Validated SysDaily daily) {
@@ -88,11 +88,10 @@ public class SysDailyController extends BaseController {
      * 修改保存岗位
      */
     @RequiresPermissions("system:daily:edit")
-    @Log(title = "博客管理", businessType = BusinessType.INSERT)
+    @Log(title = "日记管理", businessType = BusinessType.UPDATE)
     @PostMapping("/edit")
     @ResponseBody
     public AjaxResult editSave(@Validated SysDaily daily) {
-        log.debug("修改博客记录");
         sysDailyService.updateDaily(daily);
         return toAjax(1);
     }
@@ -101,11 +100,10 @@ public class SysDailyController extends BaseController {
      * 修改保存岗位
      */
     @RequiresPermissions("system:daily:remove")
-    @Log(title = "博客管理", businessType = BusinessType.INSERT)
+    @Log(title = "日记管理", businessType = BusinessType.DELETE)
     @PostMapping("/remove")
     @ResponseBody
     public AjaxResult remove(@Validated String ids) {
-        log.debug("删除博客记录");
         SysDaily sysDaily = new SysDaily();
         sysDaily.setDailyId(ids);
         sysDailyService.deleteDailyByIds(sysDaily);

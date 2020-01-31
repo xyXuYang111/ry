@@ -4,6 +4,8 @@ import java.util.TimerTask;
 
 import com.ruoyi.framework.redis.RedisService;
 import com.ruoyi.framework.util.DateUtil;
+import com.ruoyi.system.service.impl.SysLogininforMongoServiceImpl;
+import com.ruoyi.system.service.impl.SysOperLogMongoServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.ruoyi.common.constant.Constants;
@@ -78,8 +80,12 @@ public class AsyncFactory
                 operLog.setOperLocation(AddressUtils.getRealAddressByIP(operLog.getOperIp()));
                 SpringUtils.getBean(ISysOperLogService.class).insertOperlog(operLog);
 
-                //新增日志记录到redis中
+                //新增日志记录到redis中:map备份
                 SpringUtils.getBean(RedisService.class).put("REQUEST", DateUtil.getNowTime(), operLog);
+                //新增日志记录到redis中:map备份
+                SpringUtils.getBean(RedisService.class).leftPush("OPERATE_LOG", operLog);
+                //新增日志记录到mongo中
+                SpringUtils.getBean(SysOperLogMongoServiceImpl.class).insertOperlog(operLog);
             }
         };
     }
@@ -137,6 +143,10 @@ public class AsyncFactory
 
                 //新增日志记录到redis中
                 SpringUtils.getBean(RedisService.class).put("LOGIN", DateUtil.getNowTime(), logininfor);
+                //新增日志记录到redis中:map备份
+                SpringUtils.getBean(RedisService.class).leftPush("LOGIN_LOG", logininfor);
+                //新增日志记录到mongo中
+                SpringUtils.getBean(SysLogininforMongoServiceImpl.class).insertLogininfor(logininfor);
             }
         };
     }

@@ -89,7 +89,7 @@ public class SysFileTypeController extends BaseController {
     /**
      * 新增保存部门
      */
-    @Log(title = "类型管理", businessType = BusinessType.INSERT)
+    @Log(title = "文件类型管理", businessType = BusinessType.INSERT)
     @RequiresPermissions("system:fileType:add")
     @PostMapping("/add")
     @ResponseBody
@@ -113,7 +113,7 @@ public class SysFileTypeController extends BaseController {
     /**
      * 保存
      */
-    @Log(title = "类型管理", businessType = BusinessType.UPDATE)
+    @Log(title = "文件类型管理", businessType = BusinessType.UPDATE)
     @RequiresPermissions("system:fileType:edit")
     @PostMapping("/edit")
     @ResponseBody
@@ -127,7 +127,7 @@ public class SysFileTypeController extends BaseController {
     /**
      * 保存
      */
-    @Log(title = "类型管理", businessType = BusinessType.UPDATE)
+    @Log(title = "文件类型管理", businessType = BusinessType.DELETE)
     @RequiresPermissions("system:fileType:remove")
     @GetMapping("/remove/{fileTypeId}")
     @ResponseBody

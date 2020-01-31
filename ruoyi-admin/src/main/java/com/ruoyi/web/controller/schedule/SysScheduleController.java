@@ -76,7 +76,7 @@ public class SysScheduleController extends BaseController {
      * 新增保存岗位
      */
     @RequiresPermissions("system:schedule:add")
-    @Log(title = "博客管理", businessType = BusinessType.INSERT)
+    @Log(title = "待办管理", businessType = BusinessType.INSERT)
     @PostMapping("/add")
     @ResponseBody
     public AjaxResult addSave(@Validated SysSchedule schedule) {
@@ -89,7 +89,7 @@ public class SysScheduleController extends BaseController {
      * 修改保存岗位
      */
     @RequiresPermissions("system:schedule:edit")
-    @Log(title = "博客管理", businessType = BusinessType.INSERT)
+    @Log(title = "待办管理", businessType = BusinessType.UPDATE)
     @PostMapping("/edit")
     @ResponseBody
     public AjaxResult editSave(@Validated SysSchedule schedule) {
@@ -102,7 +102,7 @@ public class SysScheduleController extends BaseController {
      * 修改保存岗位
      */
     @RequiresPermissions("system:schedule:remove")
-    @Log(title = "博客管理", businessType = BusinessType.INSERT)
+    @Log(title = "待办管理", businessType = BusinessType.DELETE)
     @PostMapping("/remove")
     @ResponseBody
     public AjaxResult remove(@Validated String ids) {
