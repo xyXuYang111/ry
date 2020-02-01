@@ -6,6 +6,7 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+import com.ruoyi.system.domain.SysUser;
 import net.glxn.qrgen.javase.QRCode;
 import net.glxn.qrgen.core.image.ImageType;
 import net.glxn.qrgen.core.vcard.VCard;
@@ -50,17 +51,17 @@ public class QRCodeUtil {
         return filePath;
     }
 
-    public static String createQrCodeVCard(){
+    public static String createQrCodeVCard(SysUser sysUser){
 
         String filePath = "E:\\photo\\" + System.currentTimeMillis() + ".jpeg";
 
         VCard vCard = new VCard();
-        vCard.setName("许洋");
-        vCard.setAddress("湖北省");
-        vCard.setCompany("company Inc.");
-        vCard.setPhoneNumber("15172399690");
-        vCard.setTitle("移动电话");
-        vCard.setEmail("1824650783@qq.com");
+        vCard.setName(sysUser.getUserName());
+        vCard.setAddress(sysUser.getAvatar());
+        vCard.setCompany("");
+        vCard.setPhoneNumber(sysUser.getPhonenumber());
+        vCard.setTitle("java开发");
+        vCard.setEmail(sysUser.getEmail());
         vCard.setWebsite("https://google.com");
 
         ByteArrayOutputStream bout =

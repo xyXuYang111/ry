@@ -5,6 +5,7 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.framework.util.ShiroUtils;
 import com.ruoyi.system.domain.SysEmail;
 import com.ruoyi.system.service.SysEmailService;
 import lombok.extern.slf4j.Slf4j;
@@ -79,6 +80,7 @@ public class SysEmailController extends BaseController {
     @PostMapping("/add")
     @ResponseBody
     public AjaxResult addSave(@Validated SysEmail email) {
+        email.setCreateBy(ShiroUtils.getUserIdStr());
         sysEmailService.insertEmail(email);
         return toAjax(1);
     }
@@ -91,6 +93,7 @@ public class SysEmailController extends BaseController {
     @PostMapping("/edit")
     @ResponseBody
     public AjaxResult editSave(@Validated SysEmail email) {
+        email.setUpdateBy(ShiroUtils.getUserIdStr());
         sysEmailService.updateEmail(email);
         return toAjax(1);
     }

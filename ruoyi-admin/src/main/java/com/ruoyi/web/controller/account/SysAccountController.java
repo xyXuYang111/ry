@@ -5,6 +5,7 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.framework.util.ShiroUtils;
 import com.ruoyi.system.code.QRCodeUtil;
 import com.ruoyi.system.domain.SysAccount;
 import com.ruoyi.system.service.SysAccountService;
@@ -83,6 +84,7 @@ public class SysAccountController extends BaseController {
     @PostMapping("/add")
     @ResponseBody
     public AjaxResult addSave(@Validated SysAccount account) {
+        account.setCreateBy(ShiroUtils.getUserIdStr());
         sysAccountService.insertAccount(account);
         return toAjax(1);
     }
@@ -96,6 +98,7 @@ public class SysAccountController extends BaseController {
     @ResponseBody
     public AjaxResult editSave(@Validated SysAccount account) {
         log.debug("修改博客记录");
+        account.setUpdateBy(ShiroUtils.getUserIdStr());
         sysAccountService.updateAccount(account);
         return toAjax(1);
     }

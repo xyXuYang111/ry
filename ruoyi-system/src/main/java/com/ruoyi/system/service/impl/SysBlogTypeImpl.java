@@ -9,7 +9,10 @@ import com.ruoyi.system.mapper.SysBlogTypeMapper;
 import com.ruoyi.system.mapper.SysFileTypeMapper;
 import com.ruoyi.system.service.SysBlogTypeService;
 import com.ruoyi.system.service.SysFileTypeService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,18 +23,23 @@ import java.util.List;
  * @Date: 2020/1/23 01:00
  * @Description:
  */
+@Slf4j
 @Service
 public class SysBlogTypeImpl implements SysBlogTypeService {
+
+    private static final String BLOG_TYPE_CACHE_KEY = "blogType";
 
     @Autowired
     private SysBlogTypeMapper sysBlogTypeMapper;
 
     @Override
+    @Cacheable(value = BLOG_TYPE_CACHE_KEY, key = "'selectBlogTypeList'+ #sysBlogType.toString()")
     public List<SysBlogType> selectBlogTypeList(SysBlogType sysBlogType) {
         return sysBlogTypeMapper.selectBlogTypeList(sysBlogType);
     }
 
     @Override
+    @Cacheable(value = BLOG_TYPE_CACHE_KEY, key = "'selectBlogTypeTree'+ #sysBlogType.toString()")
     public List<Ztree> selectBlogTypeTree(SysBlogType sysBlogType) {
         List<SysBlogType> fileTypeList = sysBlogTypeMapper.selectBlogTypeList(sysBlogType);
         List<Ztree> ztrees = initZtree(fileTypeList);
@@ -39,6 +47,7 @@ public class SysBlogTypeImpl implements SysBlogTypeService {
     }
 
     @Override
+    @Cacheable(value = BLOG_TYPE_CACHE_KEY, key = "'roleBlogTypeTreeData'+ #role.toString()")
     public List<Ztree> roleBlogTypeTreeData(SysRole role) {
         Long roleId = role.getRoleId();
         List<Ztree> ztrees = new ArrayList<Ztree>();
@@ -56,6 +65,7 @@ public class SysBlogTypeImpl implements SysBlogTypeService {
     }
 
     @Override
+    @Cacheable(value = BLOG_TYPE_CACHE_KEY, key = "'selectBlogTypeCount'+ #parentId")
     public int selectBlogTypeCount(Long parentId) {
         SysBlogType sysBlogType = new SysBlogType();
         sysBlogType.setParentId(parentId);
@@ -63,6 +73,7 @@ public class SysBlogTypeImpl implements SysBlogTypeService {
     }
 
     @Override
+    @Cacheable(value = BLOG_TYPE_CACHE_KEY, key = "'checkBlogTypeExistUser'+ #fileTypeId")
     public boolean checkBlogTypeExistUser(Long fileTypeId) {
         SysBlogType sysBlogType = new SysBlogType();
         sysBlogType.setBlogTypeId(fileTypeId);
@@ -70,18 +81,21 @@ public class SysBlogTypeImpl implements SysBlogTypeService {
     }
 
     @Override
+    @CacheEvict(value = BLOG_TYPE_CACHE_KEY, allEntries = true, beforeInvocation = true)
     public int deleteBlogTypeById(Long fileTypeId) {
         sysBlogTypeMapper.deleteBlogTypeById(fileTypeId);
         return 1;
     }
 
     @Override
+    @CacheEvict(value = BLOG_TYPE_CACHE_KEY, allEntries = true, beforeInvocation = true)
     public int insertBlogType(SysBlogType sysBlogType) {
         sysBlogTypeMapper.insertBlogType(sysBlogType);
         return 1;
     }
 
     @Override
+    @CacheEvict(value = BLOG_TYPE_CACHE_KEY, allEntries = true, beforeInvocation = true)
     public int updateBlogType(SysBlogType sysBlogType) {
         sysBlogTypeMapper.updateBlogType(sysBlogType);
         return 1;
@@ -93,6 +107,7 @@ public class SysBlogTypeImpl implements SysBlogTypeService {
     }
 
     @Override
+    @Cacheable(value = BLOG_TYPE_CACHE_KEY, key = "'checkBlogTypeNameUnique'+ #sysBlogType.blogTypeId")
     public SysBlogType checkBlogTypeNameUnique(SysBlogType sysBlogType) {
         return sysBlogTypeMapper.checkBlogTypeNameUnique(sysBlogType);
     }

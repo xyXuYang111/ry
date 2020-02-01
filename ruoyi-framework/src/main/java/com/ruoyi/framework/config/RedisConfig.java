@@ -5,11 +5,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.listener.PatternTopic;
-import org.springframework.data.redis.listener.RedisMessageListenerContainer;
-import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
+import org.springframework.session.data.redis.RedisFlushMode;
+import org.springframework.session.data.redis.RedisOperationsSessionRepository;
 import redis.clients.jedis.JedisPoolConfig;
 
 /**
@@ -35,6 +35,11 @@ public class RedisConfig {
     private int minIdle = 0;
 
     private String timeOut = "2000";
+
+    /**
+     * spring在多长时间后强制使redis中的session失效,默认是1800.(单位/秒)
+     */
+    private int maxInactiveIntervalInSeconds = 1800;
 
     @Bean(name = "jedisPoolConfig")
     public JedisPoolConfig jedisPoolConfig(){
@@ -88,4 +93,14 @@ public class RedisConfig {
         //也有好几个重载方法，这边默认调用处理器的方法 叫handleMessage 可以自己到源码里面看
         return new MessageListenerAdapter(receiver, "receiveMessage");
     }*/
+
+    @Primary
+    @Bean
+    public RedisOperationsSessionRepository sessionRepository(@Qualifier("redisTemplate") RedisTemplate<Object, Object> sessionRedisTemplate) {
+        RedisOperationsSessionRepository sessionRepository = new RedisOperationsSessionRepository(sessionRedisTemplate);
+        sessionRepository.setDefaultMaxInactiveInterval(maxInactiveIntervalInSeconds);
+        sessionRepository.setRedisFlushMode(RedisFlushMode.IMMEDIATE);
+        sessionRepository.setRedisKeyNamespace("spring-session");
+        return sessionRepository;
+    }
 }

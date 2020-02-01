@@ -1,5 +1,6 @@
 package com.ruoyi.web.controller.system;
 
+import com.ruoyi.system.code.QRCodeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,13 @@ import com.ruoyi.framework.shiro.service.SysPasswordService;
 import com.ruoyi.framework.util.ShiroUtils;
 import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.system.service.ISysUserService;
+import sun.misc.BASE64Encoder;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Base64;
 
 /**
  * 个人信息 业务处理
@@ -52,6 +60,20 @@ public class SysProfileController extends BaseController
         mmap.put("user", user);
         mmap.put("roleGroup", userService.selectUserRoleGroup(user.getUserId()));
         mmap.put("postGroup", userService.selectUserPostGroup(user.getUserId()));
+        String fileUrl = QRCodeUtil.createQrCodeVCard(user);
+        try {
+            InputStream in = new FileInputStream(fileUrl);
+            byte[] bytes = new byte[in.available()];
+            // 将文件中的内容读入到数组中
+            in.read(bytes);
+            String strBase64 = new BASE64Encoder().encode(bytes);
+            in.close();
+            StringBuilder base64 = new StringBuilder();
+            base64.append("data:image/jpeg;base64,").append(strBase64);
+            mmap.put("strBase64", base64.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return prefix + "/profile";
     }
 

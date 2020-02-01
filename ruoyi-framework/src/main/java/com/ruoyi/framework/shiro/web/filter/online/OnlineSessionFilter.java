@@ -3,6 +3,8 @@ package com.ruoyi.framework.shiro.web.filter.online;
 import java.io.IOException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.AccessControlFilter;
@@ -28,6 +30,12 @@ public class OnlineSessionFilter extends AccessControlFilter
      */
     @Value("${shiro.user.loginUrl}")
     private String loginUrl;
+
+    /**
+     * 强制退出后重定向的地址
+     */
+    @Value("${shiro.user.addUrl}")
+    private String addUrl;
 
     @Autowired
     private OnlineSessionDAO onlineSessionDAO;
@@ -91,6 +99,12 @@ public class OnlineSessionFilter extends AccessControlFilter
     @Override
     protected void redirectToLogin(ServletRequest request, ServletResponse response) throws IOException
     {
-        WebUtils.issueRedirect(request, response, loginUrl);
+        HttpServletRequest servletRequest = (HttpServletRequest)request;
+        String uri = servletRequest.getRequestURI();
+        if(uri.contains("add")){
+            WebUtils.issueRedirect(request, response, addUrl);
+        }else{
+            WebUtils.issueRedirect(request, response, loginUrl);
+        }
     }
 }

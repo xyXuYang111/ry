@@ -86,6 +86,7 @@ public class SysBlogController extends BaseController {
     @ResponseBody
     public AjaxResult addSave(@Validated SysBlog blog) {
         log.debug("新增博客记录");
+        blog.setCreateBy(ShiroUtils.getUserIdStr());
         sysBlogService.insertBlog(blog);
         return toAjax(1);
     }
@@ -99,6 +100,7 @@ public class SysBlogController extends BaseController {
     @ResponseBody
     public AjaxResult editSave(@Validated SysBlog blog) {
         log.debug("修改博客记录");
+        blog.setUpdateBy(ShiroUtils.getUserIdStr());
         sysBlogService.updateBlog(blog);
         return toAjax(1);
     }

@@ -54,6 +54,7 @@
                         <ul class="nav nav-tabs">
                             <li class="active"><a href="#user_info" data-toggle="tab" aria-expanded="true">基本资料</a></li>
                             <li><a href="#modify_password" data-toggle="tab" aria-expanded="false">修改密码</a></li>
+                            <li><a href="#user_code" data-toggle="tab" aria-expanded="false">个人信息二维码</a></li>
                         </ul>
                         <div class="tab-content">
                             <!--用户信息-->
@@ -129,6 +130,20 @@
                                         </div>
                                     </div>
                                 </form>
+                            </div>
+
+                            <!--生成二维码-->
+                            <div class="tab-pane" id="user_code">
+                                <div class="form-group">
+                                    <div class="ibox float-e-margins">
+                                        <div class="ibox-content">
+                                            <p id="pay-qrcode">
+                                                <a href="javascript:;"><img th:src="@{${strBase64}}" width="25%" alt="个人信息">
+                                                </a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

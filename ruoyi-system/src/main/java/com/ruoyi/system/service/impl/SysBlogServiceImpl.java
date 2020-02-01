@@ -14,6 +14,8 @@ import com.ruoyi.system.service.SysBlogService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,37 +29,44 @@ import java.util.List;
  */
 @Service
 public class SysBlogServiceImpl implements SysBlogService {
-    private static final Logger log = LoggerFactory.getLogger(SysBlogServiceImpl.class);
+
+    private static final String BLOG_CACHE_KEY = "blog";
 
     @Autowired
     private SysBlogMapper sysBlogMapper;
 
     @Override
+    @Cacheable(value = BLOG_CACHE_KEY, key = "'selectBlog'+ #sysBlog.blogId")
     public SysBlog selectBlog(SysBlog sysBlog) {
         return sysBlogMapper.selectBlog(sysBlog);
     }
 
     @Override
+    @Cacheable(value = BLOG_CACHE_KEY, key = "'selectBlogList'+ #sysBlog.toString()")
     public List<SysBlog> selectBlogList(SysBlog sysBlog) {
         return sysBlogMapper.selectBlogList(sysBlog);
     }
 
     @Override
+    @Cacheable(value = BLOG_CACHE_KEY, key = "'checkBlogKeyUnique'+ #sysBlogKey")
     public SysBlog checkBlogKeyUnique(String sysBlogKey) {
         return sysBlogMapper.checkBlogKeyUnique(sysBlogKey);
     }
 
     @Override
+    @CacheEvict(value = BLOG_CACHE_KEY, allEntries = true, beforeInvocation = true)
     public void insertBlog(SysBlog sysBlog) {
         sysBlogMapper.insertBlog(sysBlog);
     }
 
     @Override
+    @CacheEvict(value = BLOG_CACHE_KEY, allEntries = true, beforeInvocation = true)
     public void updateBlog(SysBlog sysBlog) {
         sysBlogMapper.updateBlog(sysBlog);
     }
 
     @Override
+    @CacheEvict(value = BLOG_CACHE_KEY, allEntries = true, beforeInvocation = true)
     public void deleteBlogByIds(SysBlog sysBlog) {
         sysBlogMapper.deleteBlogByIds(sysBlog);
     }

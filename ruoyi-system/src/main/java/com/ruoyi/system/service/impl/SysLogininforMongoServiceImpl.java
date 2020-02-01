@@ -8,7 +8,10 @@ import com.ruoyi.system.domain.SysOperLog;
 import com.ruoyi.system.mapper.SysLogininforMapper;
 import com.ruoyi.system.service.ISysLogininforService;
 import com.ruoyi.system.service.SysLogininforMongoService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -21,9 +24,12 @@ import java.util.List;
  * 
  * @author ruoyi
  */
+@Slf4j
 @Service
 public class SysLogininforMongoServiceImpl implements SysLogininforMongoService
 {
+
+    private static final String LOGININ_MONGO_CACHE_KEY = "logininMongo";
 
     @Autowired
     private SysLogininforMongoRepository sysLogininforMongoRepository;
@@ -34,6 +40,7 @@ public class SysLogininforMongoServiceImpl implements SysLogininforMongoService
      * @param logininfor 访问日志对象
      */
     @Override
+    @CacheEvict(value = LOGININ_MONGO_CACHE_KEY, allEntries = true, beforeInvocation = true)
     public void insertLogininfor(SysLogininfor logininfor)
     {
         sysLogininforMongoRepository.insert(logininfor);
@@ -46,6 +53,7 @@ public class SysLogininforMongoServiceImpl implements SysLogininforMongoService
      * @return 登录记录集合
      */
     @Override
+    @Cacheable(value = LOGININ_MONGO_CACHE_KEY, key = "'selectLogininforList'+ #logininfor.infoId")
     public List<SysLogininfor> selectLogininforList(int current,int rowCount,SysLogininfor logininfor)
     {
         PageRequest pr = new PageRequest(--current, rowCount, Sort.Direction.DESC, "infoId");
@@ -74,6 +82,7 @@ public class SysLogininforMongoServiceImpl implements SysLogininforMongoService
      * @return
      */
     @Override
+    @CacheEvict(value = LOGININ_MONGO_CACHE_KEY, allEntries = true, beforeInvocation = true)
     public int deleteLogininforByIds(String ids)
     {
         String[] idsArray = ids.split(",");
@@ -89,6 +98,7 @@ public class SysLogininforMongoServiceImpl implements SysLogininforMongoService
      * 清空系统登录日志
      */
     @Override
+    @CacheEvict(value = LOGININ_MONGO_CACHE_KEY, allEntries = true, beforeInvocation = true)
     public void cleanLogininfor()
     {
         sysLogininforMongoRepository.deleteAll();

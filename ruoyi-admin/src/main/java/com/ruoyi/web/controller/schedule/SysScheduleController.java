@@ -5,6 +5,7 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.framework.util.ShiroUtils;
 import com.ruoyi.system.domain.SysSchedule;
 import com.ruoyi.system.service.SysScheduleService;
 import lombok.extern.slf4j.Slf4j;
@@ -81,6 +82,7 @@ public class SysScheduleController extends BaseController {
     @ResponseBody
     public AjaxResult addSave(@Validated SysSchedule schedule) {
         log.debug("新增博客记录");
+        schedule.setCreateBy(ShiroUtils.getUserIdStr());
         sysScheduleService.insertSchedule(schedule);
         return toAjax(1);
     }
@@ -94,6 +96,7 @@ public class SysScheduleController extends BaseController {
     @ResponseBody
     public AjaxResult editSave(@Validated SysSchedule schedule) {
         log.debug("修改博客记录");
+        schedule.setUpdateBy(ShiroUtils.getUserIdStr());
         sysScheduleService.updateSchedule(schedule);
         return toAjax(1);
     }

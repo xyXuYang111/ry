@@ -91,7 +91,7 @@ public class SysBlogTypeController extends BaseController {
     @PostMapping("/add")
     @ResponseBody
     public AjaxResult addSave(@Validated SysBlogType sysBlogType) {
-        sysBlogType.setCreateBy(ShiroUtils.getLoginName());
+        sysBlogType.setCreateBy(ShiroUtils.getUserIdStr());
         sysBlogTypeService.insertBlogType(sysBlogType);
         return toAjax(1);
     }
@@ -117,6 +117,7 @@ public class SysBlogTypeController extends BaseController {
     public AjaxResult editSave(@Validated SysBlogType blogType)
     {
         blogType.setUpdateBy(ShiroUtils.getLoginName());
+        blogType.setUpdateBy(ShiroUtils.getUserIdStr());
         sysBlogTypeService.updateBlogType(blogType);
         return toAjax(1);
     }
@@ -135,6 +136,7 @@ public class SysBlogTypeController extends BaseController {
         sysBlogType.setUpdateBy(ShiroUtils.getLoginName());
         sysBlogType.setStatus("1");
         sysBlogType.setDelFlag("1");
+        sysBlogType.setCreateBy(ShiroUtils.getUserIdStr());
         sysBlogTypeService.updateBlogType(sysBlogType);
         return toAjax(1);
     }

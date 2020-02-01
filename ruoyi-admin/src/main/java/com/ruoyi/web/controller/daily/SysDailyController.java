@@ -5,6 +5,7 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.framework.util.ShiroUtils;
 import com.ruoyi.system.domain.SysDaily;
 import com.ruoyi.system.service.SysDailyService;
 import lombok.extern.slf4j.Slf4j;
@@ -80,6 +81,7 @@ public class SysDailyController extends BaseController {
     @ResponseBody
     public AjaxResult addSave(@Validated SysDaily daily) {
         log.debug("新增博客记录");
+        daily.setCreateBy(ShiroUtils.getUserIdStr());
         sysDailyService.insertDaily(daily);
         return toAjax(1);
     }
@@ -92,6 +94,7 @@ public class SysDailyController extends BaseController {
     @PostMapping("/edit")
     @ResponseBody
     public AjaxResult editSave(@Validated SysDaily daily) {
+        daily.setUpdateBy(ShiroUtils.getUserIdStr());
         sysDailyService.updateDaily(daily);
         return toAjax(1);
     }

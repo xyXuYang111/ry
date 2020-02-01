@@ -2,11 +2,16 @@ package com.ruoyi.web.controller.system;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.system.service.ISysPostService;
+import com.ruoyi.system.service.ISysRoleService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,6 +28,12 @@ import com.ruoyi.common.utils.StringUtils;
 @Controller
 public class SysLoginController extends BaseController
 {
+    @Autowired
+    private ISysRoleService roleService;
+
+    @Autowired
+    private ISysPostService postService;
+
     @GetMapping("/login")
     public String login(HttpServletRequest request, HttpServletResponse response)
     {
@@ -61,5 +72,13 @@ public class SysLoginController extends BaseController
     public String unauth()
     {
         return "error/unauth";
+    }
+
+    @GetMapping("/add")
+    public String add(ModelMap mmap)
+    {
+        mmap.put("roles", roleService.selectRoleAll());
+        mmap.put("posts", postService.selectPostAll());
+        return "add";
     }
 }

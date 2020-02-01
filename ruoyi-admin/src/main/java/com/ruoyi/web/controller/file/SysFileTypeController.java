@@ -94,7 +94,7 @@ public class SysFileTypeController extends BaseController {
     @PostMapping("/add")
     @ResponseBody
     public AjaxResult addSave(@Validated SysFileType sysFileType) {
-        sysFileType.setCreateBy(ShiroUtils.getLoginName());
+        sysFileType.setCreateBy(ShiroUtils.getUserIdStr());
         sysFileTypeService.insertFileType(sysFileType);
         return toAjax(1);
     }
@@ -119,7 +119,7 @@ public class SysFileTypeController extends BaseController {
     @ResponseBody
     public AjaxResult editSave(@Validated SysFileType fileType)
     {
-        fileType.setUpdateBy(ShiroUtils.getLoginName());
+        fileType.setUpdateBy(ShiroUtils.getUserIdStr());
         sysFileTypeService.updateFileType(fileType);
         return toAjax(1);
     }

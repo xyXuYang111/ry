@@ -139,7 +139,7 @@ public class SysFileInfoController extends BaseController {
     @ResponseBody
     public AjaxResult editSave(@Validated SysFileInfo fileType)
     {
-        fileType.setUpdateBy(ShiroUtils.getLoginName());
+        fileType.setUpdateBy(ShiroUtils.getUserIdStr());
         sysFileInfoService.updateFile(fileType);
         return toAjax(1);
     }

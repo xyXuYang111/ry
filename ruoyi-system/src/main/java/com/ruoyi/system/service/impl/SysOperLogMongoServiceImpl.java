@@ -5,6 +5,8 @@ import com.ruoyi.system.domain.SysOperLog;
 import com.ruoyi.system.domain.SysOperLog;
 import com.ruoyi.system.service.SysOperLogMongoDbService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -20,11 +22,13 @@ import java.util.List;
 @Service
 public class SysOperLogMongoServiceImpl implements SysOperLogMongoDbService
 {
+    private static final String OPER_LOG_MONGO_CACHE_KEY = "operLogMongo";
 
     @Autowired
     private SysOperLogMongoRepository sysOperLogMongoRepository;
 
     @Override
+    @CacheEvict(value = OPER_LOG_MONGO_CACHE_KEY, allEntries = true, beforeInvocation = true)
     public void insertOperlog(SysOperLog operLog) {
         sysOperLogMongoRepository.insert(operLog);
     }
@@ -36,6 +40,7 @@ public class SysOperLogMongoServiceImpl implements SysOperLogMongoDbService
      * @return 登录记录集合
      */
     @Override
+    @Cacheable(value = OPER_LOG_MONGO_CACHE_KEY, key = "'selectOperLogList'+ #logininfor.toString()")
     public List<SysOperLog> selectOperLogList(int current,int rowCount,SysOperLog logininfor)
     {
         PageRequest pr = new PageRequest(--current, rowCount, Sort.Direction.DESC, "operId");
@@ -61,6 +66,7 @@ public class SysOperLogMongoServiceImpl implements SysOperLogMongoDbService
      * @return
      */
     @Override
+    @CacheEvict(value = OPER_LOG_MONGO_CACHE_KEY, allEntries = true, beforeInvocation = true)
     public int deleteOperLogByIds(String ids)
     {
         String[] idsArray = ids.split(",");
@@ -73,6 +79,7 @@ public class SysOperLogMongoServiceImpl implements SysOperLogMongoDbService
     }
 
     @Override
+    @Cacheable(value = OPER_LOG_MONGO_CACHE_KEY, key = "'selectOperLogById'+ #sysOperLog.operId")
     public SysOperLog selectOperLogById(SysOperLog sysOperLog) {
         String operId = sysOperLog.getOperId();
         return sysOperLogMongoRepository.findSysOperLogByOperId(operId);
@@ -82,6 +89,7 @@ public class SysOperLogMongoServiceImpl implements SysOperLogMongoDbService
      * 清空系统登录日志
      */
     @Override
+    @CacheEvict(value = OPER_LOG_MONGO_CACHE_KEY, allEntries = true, beforeInvocation = true)
     public void cleanOperLog()
     {
         sysOperLogMongoRepository.deleteAll();

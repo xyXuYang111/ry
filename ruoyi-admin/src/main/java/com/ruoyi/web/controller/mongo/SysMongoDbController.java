@@ -7,6 +7,7 @@ import com.ruoyi.common.core.page.PageDomain;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.core.page.TableSupport;
 import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.framework.util.ShiroUtils;
 import com.ruoyi.system.domain.SysMongoDb;
 import com.ruoyi.system.service.SysMongoDbService;
 import lombok.extern.slf4j.Slf4j;
@@ -86,6 +87,7 @@ public class SysMongoDbController extends BaseController {
     @ResponseBody
     public AjaxResult addSave(@Validated SysMongoDb mongoDb) {
         log.debug("新增博客记录");
+        mongoDb.setCreateBy(ShiroUtils.getUserIdStr());
         sysMongoDbService.SaveOrUpdateSysMongoDb(mongoDb);
         return toAjax(1);
     }
@@ -99,6 +101,7 @@ public class SysMongoDbController extends BaseController {
     @ResponseBody
     public AjaxResult editSave(@Validated SysMongoDb mongoDb) {
         log.debug("修改博客记录");
+        mongoDb.setUpdateBy(ShiroUtils.getUserIdStr());
         sysMongoDbService.SaveOrUpdateSysMongoDb(mongoDb);
         return toAjax(1);
     }
