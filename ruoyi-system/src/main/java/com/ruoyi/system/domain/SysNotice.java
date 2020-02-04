@@ -12,8 +12,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  */
 public class SysNotice extends BaseEntity
 {
-    private static final long serialVersionUID = 1L;
-
+    private static final long serialVersionUID = 8793693168402320162L;
     /** 公告ID */
     private Long noticeId;
 

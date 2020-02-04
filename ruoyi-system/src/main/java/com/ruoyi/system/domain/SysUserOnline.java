@@ -13,8 +13,7 @@ import com.ruoyi.common.enums.OnlineStatus;
  */
 public class SysUserOnline extends BaseEntity
 {
-    private static final long serialVersionUID = 1L;
-    
+    private static final long serialVersionUID = -1143278377678797090L;
     /** 用户会话id */
     private String sessionId;
 

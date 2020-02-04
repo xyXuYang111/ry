@@ -14,8 +14,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  */
 public class SysConfig extends BaseEntity
 {
-    private static final long serialVersionUID = 1L;
-
+    private static final long serialVersionUID = -4366634900928676401L;
     /** 参数主键 */
     @Excel(name = "参数主键", cellType = ColumnType.NUMERIC)
     private Long configId;

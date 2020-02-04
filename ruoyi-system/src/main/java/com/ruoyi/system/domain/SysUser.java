@@ -18,8 +18,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  */
 public class SysUser extends BaseEntity
 {
-    private static final long serialVersionUID = 1L;
-
+    private static final long serialVersionUID = -6306353563489382004L;
     /** 用户ID */
     @Excel(name = "用户序号", cellType = ColumnType.NUMERIC, prompt = "用户编号")
     private Long userId;

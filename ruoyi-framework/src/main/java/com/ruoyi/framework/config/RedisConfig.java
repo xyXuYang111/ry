@@ -1,5 +1,6 @@
 package com.ruoyi.framework.config;
 
+import com.ruoyi.framework.redis.RedisRecevier.MessageReceiver;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -8,6 +9,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.listener.PatternTopic;
+import org.springframework.data.redis.listener.RedisMessageListenerContainer;
+import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
 import org.springframework.session.data.redis.RedisFlushMode;
 import org.springframework.session.data.redis.RedisOperationsSessionRepository;
 import redis.clients.jedis.JedisPoolConfig;
@@ -22,7 +26,7 @@ import redis.clients.jedis.JedisPoolConfig;
 @Data
 public class RedisConfig {
 
-    private String host = "192.168.133.131";
+    private String host = "127.0.0.1";
 
     private String password = "1234qwer";
 
@@ -70,29 +74,29 @@ public class RedisConfig {
         return stringRedisTemplate;
     }
 
-    /**@Bean(name = "redisMessageListener1")
+    @Bean(name = "redisMessageListener1")
     public RedisMessageListenerContainer redisMessageListenerContainer(
             @Qualifier("jedisConnectionFactory") JedisConnectionFactory jedisConnectionFactory,
             @Qualifier("listenerAdapter") MessageListenerAdapter listenerAdapter){
         log.info("redis服务监听者---redisMessageListener1");
         RedisMessageListenerContainer redisMessageListenerContainer = new RedisMessageListenerContainer();
         redisMessageListenerContainer.setConnectionFactory(jedisConnectionFactory);
-        //订阅了一个叫chat 的通道
-        redisMessageListenerContainer.addMessageListener(listenerAdapter, new PatternTopic("chat"));
+        //匹配所有频道
+        redisMessageListenerContainer.addMessageListener(listenerAdapter, new PatternTopic("*"));
         return redisMessageListenerContainer;
-    }*/
+    }
 
     /**
      * 消息监听器适配器，绑定消息处理器，利用反射技术调用消息处理器的业务方法
      * @param receiver
      * @return
      */
-    /**@Bean(name = "listenerAdapter")
+    @Bean(name = "listenerAdapter")
     public MessageListenerAdapter listenerAdapter(MessageReceiver receiver) {
         //这个地方 是给messageListenerAdapter 传入一个消息接受的处理器，利用反射的方法调用“receiveMessage”
         //也有好几个重载方法，这边默认调用处理器的方法 叫handleMessage 可以自己到源码里面看
         return new MessageListenerAdapter(receiver, "receiveMessage");
-    }*/
+    }
 
     @Primary
     @Bean

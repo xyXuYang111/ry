@@ -47,8 +47,9 @@ public class SysMenuServiceImpl implements ISysMenuService
     public List<SysMenu> selectMenusByUser(SysUser user)
     {
         List<SysMenu> menus = new LinkedList<SysMenu>();
+        boolean hasAdmin = user.isAdmin();
         // 管理员显示所有菜单信息
-        if (user.isAdmin())
+        if (hasAdmin)
         {
             menus = menuMapper.selectMenuNormalAll();
         }

@@ -12,8 +12,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  */
 public class SysDept extends BaseEntity
 {
-    private static final long serialVersionUID = 1L;
-
+    private static final long serialVersionUID = 8621413161773790405L;
     /** 部门ID */
     private Long deptId;
 

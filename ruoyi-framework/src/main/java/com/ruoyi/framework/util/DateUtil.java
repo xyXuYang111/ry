@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 @Slf4j
@@ -16,6 +17,11 @@ public class DateUtil {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         System.out.println("当前时间：" + sdf.format(d));
         return sdf.format(d);
+    }
+
+    public static Date getNowTimeDate(){
+        Calendar calendar= Calendar.getInstance();
+        return calendar.getTime();
     }
 
     public static String getNowSecond(){

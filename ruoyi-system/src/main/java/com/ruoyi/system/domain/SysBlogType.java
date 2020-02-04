@@ -11,7 +11,8 @@ import lombok.Data;
 @Data
 public class SysBlogType extends BaseEntity {
 
-    private static final long serialVersionUID = -3125786916019576934L;
+    private static final long serialVersionUID = 6784444575512611237L;
+
     /** 部门ID */
     private Long blogTypeId;
 

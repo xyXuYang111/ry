@@ -14,8 +14,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  */
 public class SysPost extends BaseEntity
 {
-    private static final long serialVersionUID = 1L;
-
+    private static final long serialVersionUID = -2659041058140986015L;
     /** 岗位序号 */
     @Excel(name = "岗位序号", cellType = ColumnType.NUMERIC)
     private Long postId;

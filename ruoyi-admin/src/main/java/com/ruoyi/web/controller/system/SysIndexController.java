@@ -1,6 +1,12 @@
 package com.ruoyi.web.controller.system;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
+
+import com.ruoyi.system.code.QRCodeUtil;
+import com.ruoyi.system.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -11,6 +17,7 @@ import com.ruoyi.framework.util.ShiroUtils;
 import com.ruoyi.system.domain.SysMenu;
 import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.system.service.ISysMenuService;
+import sun.misc.BASE64Encoder;
 
 /**
  * 首页 业务处理
@@ -22,6 +29,9 @@ public class SysIndexController extends BaseController
 {
     @Autowired
     private ISysMenuService menuService;
+
+    @Autowired
+    private ISysUserService userService;
 
     // 系统首页
     @GetMapping("/index")
@@ -50,6 +60,24 @@ public class SysIndexController extends BaseController
     public String main(ModelMap mmap)
     {
         mmap.put("version", Global.getVersion());
+        SysUser user = ShiroUtils.getSysUser();
+        mmap.put("user", user);
+        mmap.put("roleGroup", userService.selectUserRoleGroup(user.getUserId()));
+        mmap.put("postGroup", userService.selectUserPostGroup(user.getUserId()));
+        String fileUrl = QRCodeUtil.createQrCodeVCard(user);
+        try {
+            InputStream in = new FileInputStream(fileUrl);
+            byte[] bytes = new byte[in.available()];
+            // 将文件中的内容读入到数组中
+            in.read(bytes);
+            String strBase64 = new BASE64Encoder().encode(bytes);
+            in.close();
+            StringBuilder base64 = new StringBuilder();
+            base64.append("data:image/jpeg;base64,").append(strBase64);
+            mmap.put("strBase64", base64.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return "main";
     }
 }

@@ -13,8 +13,8 @@ import lombok.ToString;
 @ToString
 public class SysAccount extends BaseEntity {
 
-    private static final long serialVersionUID = 1092416681922599174L;
-    
+    private static final long serialVersionUID = 8210062396285853697L;
+
     private String accountId;
 
     private String accountName;

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysChatCodeMapper">
+    
+    <resultMap type="SysChatCode" id="SysChatCodeResult">
+    	<id     property="chatId"      column="chat_id"      />
+        <result property="chatCode"    column="chat_code"    />
+        <result property="chatName"     column="chat_name"     />
+        <result property="createBy"      column="create_by"      />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"      column="update_by"      />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+    
+    <sql id="selectChatCodeVo">
+        select chat_id, chat_code, chat_name, create_by, create_time, update_by, update_time, remark
+		from sys_chat
+    </sql>
+    
+    <!-- 查询条件 -->
+	<sql id="sqlwhereSearch">
+		<where>
+			<if test="chatId !=null">
+				and chat_id = #{chatId}
+			</if>
+			<if test="chatName !=null and chatName != ''">
+				and chat_name = #{chatName}
+			</if>
+            <if test="chatCode !=null and chatCode != ''">
+                and chat_code = #{chatCode}
+            </if>
+		</where>
+	</sql>
+    
+    <select id="selectChatCode" parameterType="SysChatCode" resultMap="SysChatCodeResult">
+        <include refid="selectChatCodeVo"/>
+        <include refid="sqlwhereSearch"/>
+    </select>
+    
+    <select id="selectChatCodeList" parameterType="SysChatCode" resultMap="SysChatCodeResult">
+        <include refid="selectChatCodeVo"/>
+        <where>
+			<if test="chatCode != null and chatCode != ''">
+				AND chat_code like concat('%', #{chatCode}, '%')
+			</if>
+			<if test="chatName != null and chatName != ''">
+				AND chat_name like concat('%', #{chatName}, '%')
+			</if>
+		</where>
+    </select>
+    
+    <select id="checkChatCodeKeyUnique" parameterType="String" resultMap="SysChatCodeResult">
+        <include refid="selectChatCodeVo"/>
+        where chat_name = #{chatName}
+    </select>
+    
+    <insert id="insertChatCode" parameterType="SysChatCode">
+        insert into sys_chat (
+			<if test="chatCode != null and chatCode != '' ">chat_code,</if>
+			<if test="chatName != null and chatName != '' ">chat_name,</if>
+			<if test="createBy != null and createBy != ''">create_by,</if>
+			<if test="remark != null and remark != ''">remark,</if>
+ 			create_time
+        )value (
+			<if test="chatCode != null and chatCode != ''">#{chatCode},</if>
+			<if test="chatName != null and chatName != ''">#{chatName},</if>
+			<if test="createBy != null and createBy != ''">#{createBy},</if>
+			<if test="remark != null and remark != ''">#{remark},</if>
+ 			now()
+		)
+    </insert>
+	 
+    <update id="updateChatCode" parameterType="SysChatCode">
+        update sys_chat
+        <set>
+            <if test="chatCode != null and chatCode != ''">chat_code = #{chatCode},</if>
+            <if test="chatName != null and chatName != ''">chat_name = #{chatName},</if>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+ 			update_time = now()
+        </set>
+        where chat_id = #{chatId}
+    </update>
+	
+    <delete id="deleteChatCodeByIds" parameterType="SysChatCode">
+        delete from sys_chat where chat_id in (${chatId})
+    </delete>
+    
+</mapper>

@@ -15,8 +15,8 @@
 	    quartz定时任务
 	</description>
 
-    <dependencies>
-    
+	<dependencies>
+
 		<!-- 定时任务 -->
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
@@ -28,13 +28,13 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
-        <!-- 通用工具-->
-        <dependency>
-            <groupId>com.ruoyi</groupId>
-            <artifactId>ruoyi-common</artifactId>
-        </dependency>
 
-    </dependencies>
+		<!-- 通用工具-->
+		<dependency>
+			<groupId>com.ruoyi</groupId>
+			<artifactId>ruoyi-common</artifactId>
+		</dependency>
+
+	</dependencies>
 	
 </project>

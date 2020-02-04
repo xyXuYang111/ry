@@ -1,5 +1,6 @@
 package com.ruoyi.web.controller.redis;
 
+import com.alibaba.fastjson.JSON;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -8,6 +9,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.core.page.TableSupport;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.framework.redis.RedisService;
+import com.ruoyi.system.domain.SysLogininfor;
 import com.ruoyi.system.domain.SysOperLog;
 import com.ruoyi.system.service.SysOperLogMongoDbService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -47,8 +50,15 @@ public class SysRedisOperlogController extends BaseController
         PageDomain pageDomain = TableSupport.buildPageRequest();
         Integer pageNum = pageDomain.getPageNum();
         Integer pageSize = pageDomain.getPageSize();
-        List<SysOperLog> list = redisService.getObjectList("OPERATE_LOG", pageNum, pageSize);
-        return getDataTable(list);
+        List<String> list = redisService.getObjectList("OPERATE_LOG", pageNum, pageSize);
+        List<SysOperLog> sysChatInfoList = new ArrayList<>();
+        if(list.size() > 0){
+            for(String str : list){
+                SysOperLog redisChat = JSON.parseObject(str, SysOperLog.class);
+                sysChatInfoList.add(redisChat);
+            }
+        }
+        return getDataTable(sysChatInfoList);
     }
 
     @RequiresPermissions("redis:operlog:remove")

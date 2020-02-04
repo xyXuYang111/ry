@@ -2,10 +2,11 @@ package com.ruoyi.framework.manager.factory;
 
 import java.util.TimerTask;
 
+import com.alibaba.fastjson.JSON;
 import com.ruoyi.framework.redis.RedisService;
 import com.ruoyi.framework.util.DateUtil;
-import com.ruoyi.system.service.impl.SysLogininforMongoServiceImpl;
-import com.ruoyi.system.service.impl.SysOperLogMongoServiceImpl;
+import com.ruoyi.system.domain.*;
+import com.ruoyi.system.service.impl.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.ruoyi.common.constant.Constants;
@@ -15,12 +16,8 @@ import com.ruoyi.common.utils.spring.SpringUtils;
 import com.ruoyi.framework.shiro.session.OnlineSession;
 import com.ruoyi.framework.util.LogUtils;
 import com.ruoyi.framework.util.ShiroUtils;
-import com.ruoyi.system.domain.SysLogininfor;
-import com.ruoyi.system.domain.SysOperLog;
-import com.ruoyi.system.domain.SysUserOnline;
 import com.ruoyi.system.service.ISysOperLogService;
 import com.ruoyi.system.service.ISysUserOnlineService;
-import com.ruoyi.system.service.impl.SysLogininforServiceImpl;
 import eu.bitwalker.useragentutils.UserAgent;
 
 /**
@@ -80,12 +77,17 @@ public class AsyncFactory
                 operLog.setOperLocation(AddressUtils.getRealAddressByIP(operLog.getOperIp()));
                 SpringUtils.getBean(ISysOperLogService.class).insertOperlog(operLog);
 
+                String jsonObject = JSON.toJSONString(operLog);
+
                 //新增日志记录到redis中:map备份
                 SpringUtils.getBean(RedisService.class).put("REQUEST", DateUtil.getNowTime(), operLog);
                 //新增日志记录到redis中:map备份
-                SpringUtils.getBean(RedisService.class).leftPush("OPERATE_LOG", operLog);
+                SpringUtils.getBean(RedisService.class).leftPush("OPERATE_LOG", jsonObject);
                 //新增日志记录到mongo中
                 SpringUtils.getBean(SysOperLogMongoServiceImpl.class).insertOperlog(operLog);
+                //新增日志记录到elastic中
+                SysOperLogElastic operLogElastic = JSON.parseObject(jsonObject, SysOperLogElastic.class);
+                SpringUtils.getBean(SysOperLogElasticServiceImpl.class).insertOperlog(operLogElastic);
             }
         };
     }
@@ -141,12 +143,17 @@ public class AsyncFactory
                 // 插入数据
                 SpringUtils.getBean(SysLogininforServiceImpl.class).insertLogininfor(logininfor);
 
+                String jsonObject = JSON.toJSONString(logininfor);
+
                 //新增日志记录到redis中
                 SpringUtils.getBean(RedisService.class).put("LOGIN", DateUtil.getNowTime(), logininfor);
                 //新增日志记录到redis中:map备份
-                SpringUtils.getBean(RedisService.class).leftPush("LOGIN_LOG", logininfor);
+                SpringUtils.getBean(RedisService.class).leftPush("LOGIN_LOG", jsonObject);
                 //新增日志记录到mongo中
                 SpringUtils.getBean(SysLogininforMongoServiceImpl.class).insertLogininfor(logininfor);
+                //新增日志记录到elastic中
+                SysLogininforElastic logininforElastic = JSON.parseObject(jsonObject, SysLogininforElastic.class);
+                SpringUtils.getBean(SysLogininforElasticServiceImpl.class).insertLogininfor(logininforElastic);
             }
         };
     }

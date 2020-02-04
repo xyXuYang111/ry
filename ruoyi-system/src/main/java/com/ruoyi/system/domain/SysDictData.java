@@ -15,8 +15,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  */
 public class SysDictData extends BaseEntity
 {
-    private static final long serialVersionUID = 1L;
-
+    private static final long serialVersionUID = -2592865158546187102L;
     /** 字典编码 */
     @Excel(name = "字典编码", cellType = ColumnType.NUMERIC)
     private Long dictCode;

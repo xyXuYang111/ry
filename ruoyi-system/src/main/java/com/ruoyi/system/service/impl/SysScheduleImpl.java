@@ -31,7 +31,6 @@ public class SysScheduleImpl implements SysScheduleService {
     }
 
     @Override
-    @Cacheable(value = schedule_CACHE_KEY, key = "'selectScheduleList'+ #sysSchedule.toString()")
     public List<SysSchedule> selectScheduleList(SysSchedule sysSchedule) {
         return sysScheduleMapper.selectScheduleList(sysSchedule);
     }

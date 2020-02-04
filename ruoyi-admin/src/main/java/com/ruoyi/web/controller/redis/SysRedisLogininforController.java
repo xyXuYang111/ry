@@ -1,5 +1,6 @@
 package com.ruoyi.web.controller.redis;
 
+import com.alibaba.fastjson.JSON;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -8,6 +9,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.core.page.TableSupport;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.framework.redis.RedisService;
+import com.ruoyi.system.domain.SysChatInfo;
 import com.ruoyi.system.domain.SysLogininfor;
 import com.ruoyi.system.service.SysLogininforMongoService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,13 +47,20 @@ public class SysRedisLogininforController extends BaseController
     @RequiresPermissions("redis:logininfor:list")
     @PostMapping("/list")
     @ResponseBody
-    public TableDataInfo list(SysLogininfor logininfor)
+    public TableDataInfo list()
     {
         PageDomain pageDomain = TableSupport.buildPageRequest();
         Integer pageNum = pageDomain.getPageNum();
         Integer pageSize = pageDomain.getPageSize();
-        List<SysLogininfor> list = redisService.getObjectList("LOGIN_LOG", pageNum, pageSize);
-        return getDataTable(list);
+        List<String> list = redisService.getObjectList("LOGIN_LOG", pageNum, pageSize);
+        List<SysLogininfor> sysChatInfoList = new ArrayList<>();
+        if(list.size() > 0){
+            for(String str : list){
+                SysLogininfor redisChat = JSON.parseObject(str, SysLogininfor.class);
+                sysChatInfoList.add(redisChat);
+            }
+        }
+        return getDataTable(sysChatInfoList);
     }
 
     @RequiresPermissions("redis:logininfor:remove")
