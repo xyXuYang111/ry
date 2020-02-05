@@ -63,14 +63,19 @@ public class SysChatInfoController extends BaseController {
         PageDomain pageDomain = TableSupport.buildPageRequest();
         Integer pageNum = pageDomain.getPageNum();
         if(pageNum == null){
-            pageNum = 1;
+            pageNum = 0;
+        }else{
+            pageNum = pageNum - 1;
         }
         Integer pageSize = pageDomain.getPageSize();
         if(pageSize == null){
             pageSize = 10;
         }
+
+        Integer pageIndex = pageNum*pageSize;
+
         String chatCode = (String) session.getAttribute("chat_code");
-        List<String> list = redisService.getObjectList(chatCode, pageNum, pageSize);
+        List<String> list = redisService.getObjectList(chatCode, pageIndex, pageSize);
         List<SysChatInfo> sysChatInfoList = new ArrayList<>();
         if(list.size() > 0){
             for(String str : list){
