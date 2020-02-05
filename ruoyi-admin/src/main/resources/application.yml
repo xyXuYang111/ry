@@ -42,10 +42,6 @@ user:
 
 # Spring配置
 spring:
-  boot:
-    admin:
-      client:
-        url: http://localhost:8089
   # 模板引擎
   thymeleaf:
     mode: HTML
@@ -140,3 +136,19 @@ management:
     web:
       exposure:
         include: "*"
+
+dubbo:
+  application:
+    name:  dubbo-consumer
+  registry:
+    address: 125.77.116.145:2182
+    # 读者请换成自己的zookeeperip
+    protocol: zookeeper
+    check: false
+  monitor:
+    protocol: register
+  consumer:
+    check:  false
+    timeout: 3000
+
+

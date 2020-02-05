@@ -1,5 +1,6 @@
 package com.ruoyi.web.controller.file;
 
+import com.alibaba.fastjson.JSON;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.controller.BaseController;
@@ -7,13 +8,18 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.Ztree;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.common.utils.poi.ExcelUtil;
+import com.ruoyi.framework.redis.redisRepository.RedisRepository;
 import com.ruoyi.framework.util.ShiroUtils;
+import com.ruoyi.system.domain.SysFileType;
 import com.ruoyi.system.domain.SysDept;
+import com.ruoyi.system.domain.SysFileType;
 import com.ruoyi.system.domain.SysFileType;
 import com.ruoyi.system.service.SysFileTypeService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.annotation.Validated;
@@ -35,6 +41,11 @@ public class SysFileTypeController extends BaseController {
     private SysFileTypeService sysFileTypeService;
 
     private String prefix = "fileType";
+
+    @Autowired
+    private MongoTemplate mongoTemplate;
+
+    private final String redis_code = "FILE_TYPE_REDIS";
 
     @RequiresPermissions("system:fileType:list")
     @GetMapping()
@@ -140,5 +151,62 @@ public class SysFileTypeController extends BaseController {
         sysFileType.setDelFlag("1");
         sysFileTypeService.updateFileType(sysFileType);
         return toAjax(1);
+    }
+
+    @RequiresPermissions("system:fileType:syncRedis")
+    @Log(title = "账号管理", businessType = BusinessType.OTHER)
+    @PostMapping("/syncRedis")
+    @ResponseBody
+    public AjaxResult syncRedis(@Validated String ids) {
+        log.debug("账号同步");
+        List<SysFileType> sysFileTypeList = sysFileTypeService.selectFileTypeList(new SysFileType());
+        //所有记录进行存储
+        if(sysFileTypeList.size() > 0){
+            RedisRepository.delete(redis_code);
+            for(SysFileType sysFileType : sysFileTypeList){
+                String str = JSON.toJSONString(sysFileType);
+                RedisRepository.leftPush(redis_code, str);
+            }
+        }
+        return toAjax(1);
+    }
+
+    @RequiresPermissions("system:fileType:syncMongo")
+    @Log(title = "账号管理", businessType = BusinessType.OTHER)
+    @PostMapping("/syncMongo")
+    @ResponseBody
+    public AjaxResult syncMongo(@Validated String ids) {
+        log.debug("账号同步");
+        if(ids.trim().length() == 0){
+            List<SysFileType> sysFileTypeList = sysFileTypeService.selectFileTypeList(new SysFileType());
+            //所有记录进行存储
+            if(sysFileTypeList.size() > 0){
+                for(SysFileType sysFileType : sysFileTypeList){
+                    mongoTemplate.remove(sysFileType);
+                    mongoTemplate.insert(sysFileType);
+                }
+            }
+        }else{
+            String[] fileTypeIdArray = ids.split(",");
+            for(String fileTypeId : fileTypeIdArray){
+                SysFileType sysFileType = sysFileTypeService.selectFileTypeById(Long.valueOf(fileTypeId));
+                if(sysFileType != null){
+                    mongoTemplate.remove(sysFileType);
+                    mongoTemplate.insert(sysFileType);
+                }
+            }
+        }
+        return toAjax(1);
+    }
+
+    @Log(title = "操作日志", businessType = BusinessType.EXPORT)
+    @RequiresPermissions("system:fileType:export")
+    @PostMapping("/export")
+    @ResponseBody
+    public AjaxResult export(SysFileType operLog)
+    {
+        List<SysFileType> list = sysFileTypeService.selectFileTypeList(operLog);
+        ExcelUtil<SysFileType> util = new ExcelUtil<SysFileType>(SysFileType.class);
+        return util.exportExcel(list, "操作日志");
     }
 }

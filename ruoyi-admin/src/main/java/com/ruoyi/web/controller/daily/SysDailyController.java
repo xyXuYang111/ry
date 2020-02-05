@@ -1,16 +1,22 @@
 package com.ruoyi.web.controller.daily;
 
+import com.alibaba.fastjson.JSON;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.common.utils.poi.ExcelUtil;
+import com.ruoyi.framework.redis.redisRepository.RedisRepository;
 import com.ruoyi.framework.util.ShiroUtils;
+import com.ruoyi.system.domain.SysDaily;
+import com.ruoyi.system.domain.SysDaily;
 import com.ruoyi.system.domain.SysDaily;
 import com.ruoyi.system.service.SysDailyService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.annotation.Validated;
@@ -32,6 +38,11 @@ public class SysDailyController extends BaseController {
     private SysDailyService sysDailyService;
 
     private String prefix = "daily";
+
+    @Autowired
+    private MongoTemplate mongoTemplate;
+
+    private final String redis_code = "DAILY_REDIS";
 
     @RequiresPermissions("system:daily:list")
     @GetMapping()
@@ -111,5 +122,65 @@ public class SysDailyController extends BaseController {
         sysDaily.setDailyId(ids);
         sysDailyService.deleteDailyByIds(sysDaily);
         return toAjax(1);
+    }
+
+    @RequiresPermissions("system:daily:syncRedis")
+    @Log(title = "日志管理", businessType = BusinessType.OTHER)
+    @PostMapping("/syncRedis")
+    @ResponseBody
+    public AjaxResult syncRedis(@Validated String ids) {
+        log.debug("账号同步");
+        List<SysDaily> sysDailyList = sysDailyService.selectDailyList(new SysDaily());
+        //所有记录进行存储
+        if(sysDailyList.size() > 0){
+            RedisRepository.delete(redis_code);
+            for(SysDaily sysDaily : sysDailyList){
+                String str = JSON.toJSONString(sysDaily);
+                RedisRepository.leftPush(redis_code, str);
+            }
+        }
+        return toAjax(1);
+    }
+
+    @RequiresPermissions("system:daily:syncMongo")
+    @Log(title = "日志管理", businessType = BusinessType.OTHER)
+    @PostMapping("/syncMongo")
+    @ResponseBody
+    public AjaxResult syncMongo(@Validated String ids) {
+        log.debug("账号同步");
+        if(ids.trim().length() == 0){
+            List<SysDaily> sysDailyList = sysDailyService.selectDailyList(new SysDaily());
+            //所有记录进行存储
+            if(sysDailyList.size() > 0){
+                for(SysDaily sysDaily : sysDailyList){
+                    mongoTemplate.remove(sysDaily);
+                    mongoTemplate.insert(sysDaily);
+                }
+            }
+        }else{
+            String[] dailyIdArray = ids.split(",");
+            for(String dailyId : dailyIdArray){
+                SysDaily sysDailyInfo = new SysDaily();
+                sysDailyInfo.setDailyId(dailyId);
+
+                SysDaily sysDaily = sysDailyService.selectDaily(sysDailyInfo);
+                if(sysDaily != null){
+                    mongoTemplate.remove(sysDaily);
+                    mongoTemplate.insert(sysDaily);
+                }
+            }
+        }
+        return toAjax(1);
+    }
+
+    @Log(title = "日志管理", businessType = BusinessType.EXPORT)
+    @RequiresPermissions("system:daily:export")
+    @PostMapping("/export")
+    @ResponseBody
+    public AjaxResult export(SysDaily operLog)
+    {
+        List<SysDaily> list = sysDailyService.selectDailyList(operLog);
+        ExcelUtil<SysDaily> util = new ExcelUtil<SysDaily>(SysDaily.class);
+        return util.exportExcel(list, "日志管理");
     }
 }

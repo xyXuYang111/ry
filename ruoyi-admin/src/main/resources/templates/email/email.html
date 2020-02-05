@@ -32,6 +32,12 @@
 				<a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:email:remove">
 		            <i class="fa fa-remove"></i> 删除
 		        </a>
+				<a class="btn btn-warning" onclick="$.operate.syncRedis()" shiro:hasPermission="system:email:syncRedis">
+					<i class="fa fa-remove"></i> redis同步
+				</a>
+				<a class="btn btn-warning" onclick="$.operate.syncMongo()" shiro:hasPermission="system:email:syncMongo">
+					<i class="fa fa-remove"></i> mongo同步
+				</a>
 				<a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:email:export">
 		            <i class="fa fa-download"></i> 导出
 		        </a>
@@ -57,6 +63,8 @@
 		        updateUrl: prefix + "/edit/{id}",
 		        removeUrl: prefix + "/remove",
 				sendUrl: prefix + "/send",
+				syncRedisUrl: prefix + "/syncRedis",
+				syncMongoUrl: prefix + "/syncMongo",
 		        exportUrl: prefix + "/export",
 		        sortName: "createTime",
 		        modalName: "邮件",

@@ -1,16 +1,22 @@
 package com.ruoyi.web.controller.blog;
 
+import com.alibaba.fastjson.JSON;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.Ztree;
 import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.common.utils.poi.ExcelUtil;
+import com.ruoyi.framework.redis.redisRepository.RedisRepository;
 import com.ruoyi.framework.util.ShiroUtils;
+import com.ruoyi.system.domain.SysBlogType;
+import com.ruoyi.system.domain.SysBlogType;
 import com.ruoyi.system.domain.SysBlogType;
 import com.ruoyi.system.service.SysBlogTypeService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.annotation.Validated;
@@ -32,6 +38,11 @@ public class SysBlogTypeController extends BaseController {
     private SysBlogTypeService sysBlogTypeService;
 
     private String prefix = "blogType";
+
+    @Autowired
+    private MongoTemplate mongoTemplate;
+
+    private final String redis_code = "BLOG_TYPE_REDIS";
 
     @RequiresPermissions("system:blogType:list")
     @GetMapping()
@@ -139,5 +150,65 @@ public class SysBlogTypeController extends BaseController {
         sysBlogType.setCreateBy(ShiroUtils.getUserIdStr());
         sysBlogTypeService.updateBlogType(sysBlogType);
         return toAjax(1);
+    }
+
+    @RequiresPermissions("system:blogType:syncRedis")
+    @Log(title = "博客类型管理", businessType = BusinessType.OTHER)
+    @PostMapping("/syncRedis")
+    @ResponseBody
+    public AjaxResult syncRedis(@Validated String ids) {
+        log.debug("账号同步");
+        List<SysBlogType> sysBlogTypeList = sysBlogTypeService.selectBlogTypeList(new SysBlogType());
+        //所有记录进行存储
+        if(sysBlogTypeList.size() > 0){
+            RedisRepository.delete(redis_code);
+            for(SysBlogType sysBlogType : sysBlogTypeList){
+                String str = JSON.toJSONString(sysBlogType);
+                RedisRepository.leftPush(redis_code, str);
+            }
+        }
+        return toAjax(1);
+    }
+
+    @RequiresPermissions("system:blogType:syncMongo")
+    @Log(title = "博客类型管理", businessType = BusinessType.OTHER)
+    @PostMapping("/syncMongo")
+    @ResponseBody
+    public AjaxResult syncMongo(@Validated String ids) {
+        log.debug("账号同步");
+        if(ids.trim().length() == 0){
+            List<SysBlogType> sysBlogTypeList = sysBlogTypeService.selectBlogTypeList(new SysBlogType());
+            //所有记录进行存储
+            if(sysBlogTypeList.size() > 0){
+                for(SysBlogType sysBlogType : sysBlogTypeList){
+                    mongoTemplate.remove(sysBlogType);
+                    mongoTemplate.insert(sysBlogType);
+                }
+            }
+        }else{
+            String[] blogTypeIdArray = ids.split(",");
+            for(String blogTypeId : blogTypeIdArray){
+                SysBlogType sysBlogTypeInfo = new SysBlogType();
+                sysBlogTypeInfo.setBlogTypeId(Long.valueOf(blogTypeId));
+
+                SysBlogType sysBlogType = sysBlogTypeService.selectBlogTypeById(Long.valueOf(blogTypeId));
+                if(sysBlogType != null){
+                    mongoTemplate.remove(sysBlogType);
+                    mongoTemplate.insert(sysBlogType);
+                }
+            }
+        }
+        return toAjax(1);
+    }
+
+    @Log(title = "博客类型管理", businessType = BusinessType.EXPORT)
+    @RequiresPermissions("system:blogType:export")
+    @PostMapping("/export")
+    @ResponseBody
+    public AjaxResult export(SysBlogType sysBlogType)
+    {
+        List<SysBlogType> list = sysBlogTypeService.selectBlogTypeList(sysBlogType);
+        ExcelUtil<SysBlogType> util = new ExcelUtil<SysBlogType>(SysBlogType.class);
+        return util.exportExcel(list, "博客类型管理");
     }
 }

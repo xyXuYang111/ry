@@ -32,6 +32,12 @@
 				<a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()" shiro:hasPermission="system:account:remove">
 		            <i class="fa fa-remove"></i> 删除
 		        </a>
+				<a class="btn btn-warning" onclick="$.operate.syncRedis()" shiro:hasPermission="system:account:syncRedis">
+					<i class="fa fa-remove"></i> redis同步
+				</a>
+				<a class="btn btn-warning" onclick="$.operate.syncMongo()" shiro:hasPermission="system:account:syncMongo">
+					<i class="fa fa-remove"></i> mongo同步
+				</a>
 				<a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:account:export">
 		            <i class="fa fa-download"></i> 导出
 		        </a>
@@ -56,8 +62,10 @@
 		        removeUrl: prefix + "/remove",
 		        exportUrl: prefix + "/export",
 				codeUrl: prefix + "/code",
+				syncRedisUrl: prefix + "/syncRedis",
+				syncMongoUrl: prefix + "/syncMongo",
 		        sortName: "createTime",
-		        modalName: "图片",
+		        modalName: "账号",
 		        columns: [{
 		            checkbox: true
 		        },

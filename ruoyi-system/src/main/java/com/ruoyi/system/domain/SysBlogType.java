@@ -2,6 +2,8 @@ package com.ruoyi.system.domain;
 
 import com.ruoyi.common.core.domain.BaseEntity;
 import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * 部门表 sys_dept
@@ -9,10 +11,12 @@ import lombok.Data;
  * @author ruoyi
  */
 @Data
+@Document(value = "SysBlogType")
 public class SysBlogType extends BaseEntity {
 
     private static final long serialVersionUID = 6784444575512611237L;
 
+    @Id
     /** 部门ID */
     private Long blogTypeId;
 

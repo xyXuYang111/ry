@@ -8,14 +8,19 @@ import com.ruoyi.common.core.page.PageDomain;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.core.page.TableSupport;
 import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.framework.redis.RedisSender.MessageSender;
 import com.ruoyi.framework.redis.RedisService;
+import com.ruoyi.framework.redis.redisRepository.RedisRepository;
 import com.ruoyi.framework.util.ShiroUtils;
+import com.ruoyi.system.domain.SysAccount;
 import com.ruoyi.system.domain.SysChatInfo;
+import com.ruoyi.system.domain.SysOperLog;
 import com.ruoyi.system.domain.SysRedisChat;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
@@ -45,6 +50,11 @@ public class SysChatInfoController extends BaseController {
 
     @Autowired
     private MessageSender messageSender;
+
+    @Autowired
+    private MongoTemplate mongoTemplate;
+
+    private final String redis_code = "CHAT_INFO_REDIS";
 
     @RequiresPermissions("system:chatInfo:list")
     @GetMapping()

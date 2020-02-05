@@ -1,18 +1,24 @@
 package com.ruoyi.web.controller.chat;
 
+import com.alibaba.fastjson.JSON;
 import com.mysql.cj.x.protobuf.MysqlxDatatypes;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.common.utils.poi.ExcelUtil;
+import com.ruoyi.framework.redis.redisRepository.RedisRepository;
 import com.ruoyi.framework.util.ShiroUtils;
+import com.ruoyi.system.domain.SysChatCode;
+import com.ruoyi.system.domain.SysChatCode;
 import com.ruoyi.system.domain.SysChatCode;
 import com.ruoyi.system.service.SysChatCodeService;
 import com.ruoyi.system.service.SysChatCodeService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.annotation.Validated;
@@ -34,6 +40,11 @@ public class SysChatController extends BaseController {
     private SysChatCodeService sysChatCodeService;
 
     private String prefix = "chat";
+
+    @Autowired
+    private MongoTemplate mongoTemplate;
+
+    private final String redis_code = "CHAT_REDIS";
 
     @RequiresPermissions("system:chat:list")
     @GetMapping()
@@ -118,5 +129,65 @@ public class SysChatController extends BaseController {
         sysChatCode.setChatId(ids);
         sysChatCodeService.deleteChatCodeByIds(sysChatCode);
         return toAjax(1);
+    }
+
+    @RequiresPermissions("system:chat:syncRedis")
+    @Log(title = "聊天管理", businessType = BusinessType.OTHER)
+    @PostMapping("/syncRedis")
+    @ResponseBody
+    public AjaxResult syncRedis(@Validated String ids) {
+        log.debug("账号同步");
+        List<SysChatCode> sysChatCodeList = sysChatCodeService.selectChatCodeList(new SysChatCode());
+        //所有记录进行存储
+        if(sysChatCodeList.size() > 0){
+            RedisRepository.delete(redis_code);
+            for(SysChatCode sysChatCode : sysChatCodeList){
+                String str = JSON.toJSONString(sysChatCode);
+                RedisRepository.leftPush(redis_code, str);
+            }
+        }
+        return toAjax(1);
+    }
+
+    @RequiresPermissions("system:chat:syncMongo")
+    @Log(title = "聊天管理", businessType = BusinessType.OTHER)
+    @PostMapping("/syncMongo")
+    @ResponseBody
+    public AjaxResult syncMongo(@Validated String ids) {
+        log.debug("账号同步");
+        if(ids.trim().length() == 0){
+            List<SysChatCode> sysChatCodeList = sysChatCodeService.selectChatCodeList(new SysChatCode());
+            //所有记录进行存储
+            if(sysChatCodeList.size() > 0){
+                for(SysChatCode sysChatCode : sysChatCodeList){
+                    mongoTemplate.remove(sysChatCode);
+                    mongoTemplate.insert(sysChatCode);
+                }
+            }
+        }else{
+            String[] chatIdArray = ids.split(",");
+            for(String chatId : chatIdArray){
+                SysChatCode sysChatCodeInfo = new SysChatCode();
+                sysChatCodeInfo.setChatId(chatId);
+
+                SysChatCode sysChatCode = sysChatCodeService.selectChatCode(sysChatCodeInfo);
+                if(sysChatCode != null){
+                    mongoTemplate.remove(sysChatCode);
+                    mongoTemplate.insert(sysChatCode);
+                }
+            }
+        }
+        return toAjax(1);
+    }
+
+    @Log(title = "聊天管理", businessType = BusinessType.EXPORT)
+    @RequiresPermissions("system:chat:export")
+    @PostMapping("/export")
+    @ResponseBody
+    public AjaxResult export(SysChatCode operLog)
+    {
+        List<SysChatCode> list = sysChatCodeService.selectChatCodeList(operLog);
+        ExcelUtil<SysChatCode> util = new ExcelUtil<SysChatCode>(SysChatCode.class);
+        return util.exportExcel(list, "聊天管理");
     }
 }

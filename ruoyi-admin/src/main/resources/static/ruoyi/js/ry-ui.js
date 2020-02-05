@@ -968,6 +968,30 @@ var table = {
         			$.operate.submit(url, "post", "json", data);
         		});
             },
+			// 批量同步
+			syncRedis: function() {
+				table.set();
+				var rows = $.common.isEmpty(table.options.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns(table.options.uniqueId);
+				if (rows.length == 0) {
+				}
+				$.modal.confirm("确认要同步选中的" + rows.length + "条数据吗?", function() {
+					var url = table.options.syncRedisUrl;
+					var data = { "ids": rows.join() };
+					$.operate.submit(url, "post", "json", data);
+				});
+			},
+			// 批量同步
+			syncMongo: function() {
+				table.set();
+				var rows = $.common.isEmpty(table.options.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns(table.options.uniqueId);
+				if (rows.length == 0) {
+				}
+				$.modal.confirm("确认要同步选中的" + rows.length + "条数据吗?", function() {
+					var url = table.options.syncMongoUrl;
+					var data = { "ids": rows.join() };
+					$.operate.submit(url, "post", "json", data);
+				});
+			},
             // 清空信息
             clean: function() {
             	table.set();

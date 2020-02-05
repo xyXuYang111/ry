@@ -2,6 +2,8 @@ package com.ruoyi.system.domain;
 
 import com.ruoyi.common.core.domain.BaseEntity;
 import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * @Auther: xuyang
@@ -9,10 +11,12 @@ import lombok.Data;
  * @Description:
  */
 @Data
+@Document(value = "SysDaily")
 public class SysDaily extends BaseEntity {
 
     private static final long serialVersionUID = 1092416681922599174L;
-    
+
+    @Id
     private String dailyId;
 
     private String dailyName;
@@ -20,6 +24,4 @@ public class SysDaily extends BaseEntity {
     private String dailyContent;
 
     private String weather;
-
-    private String remark;
 }

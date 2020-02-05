@@ -2,6 +2,8 @@ package com.ruoyi.system.domain;
 
 import com.ruoyi.common.core.domain.BaseEntity;
 import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
 
@@ -11,10 +13,12 @@ import java.io.Serializable;
  * @Description:
  */
 @Data
+@Document(value = "SysChatCode")
 public class SysChatCode extends BaseEntity {
 
     private static final long serialVersionUID = 1473631573835570024L;
 
+    @Id
     private String chatId;
 
     private String chatCode;
@@ -22,6 +26,4 @@ public class SysChatCode extends BaseEntity {
     private String chatName;
 
     private String chatMessage;
-
-    private String remark;
 }

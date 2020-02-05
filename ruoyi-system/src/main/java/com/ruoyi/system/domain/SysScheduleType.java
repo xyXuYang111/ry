@@ -2,6 +2,8 @@ package com.ruoyi.system.domain;
 
 import com.ruoyi.common.core.domain.BaseEntity;
 import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * 部门表 sys_dept
@@ -9,9 +11,12 @@ import lombok.Data;
  * @author ruoyi
  */
 @Data
+@Document(value = "SysScheduleType")
 public class SysScheduleType extends BaseEntity {
 
     private static final long serialVersionUID = -3125786916019576934L;
+
+    @Id
     /** 部门ID */
     private Long scheduleTypeId;
 

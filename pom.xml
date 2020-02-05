@@ -221,7 +221,6 @@
 		<module>ruoyi-quartz</module>
 		<module>ruoyi-generator</module>
         <module>ruoyi-common</module>
-        <module>ruoyi-spring-boot-admin</module>
     </modules>
     <packaging>pom</packaging>
 

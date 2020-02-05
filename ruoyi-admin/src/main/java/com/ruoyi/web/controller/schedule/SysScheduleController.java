@@ -1,16 +1,22 @@
 package com.ruoyi.web.controller.schedule;
 
+import com.alibaba.fastjson.JSON;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.common.utils.poi.ExcelUtil;
+import com.ruoyi.framework.redis.redisRepository.RedisRepository;
 import com.ruoyi.framework.util.ShiroUtils;
+import com.ruoyi.system.domain.SysSchedule;
+import com.ruoyi.system.domain.SysSchedule;
 import com.ruoyi.system.domain.SysSchedule;
 import com.ruoyi.system.service.SysScheduleService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -33,6 +39,11 @@ public class SysScheduleController extends BaseController {
     private SysScheduleService sysScheduleService;
 
     private String prefix = "schedule";
+
+    @Autowired
+    private MongoTemplate mongoTemplate;
+
+    private final String redis_code = "SCHEDULE_REDIS";
 
     @RequiresPermissions("system:schedule:list")
     @GetMapping()
@@ -114,5 +125,65 @@ public class SysScheduleController extends BaseController {
         sysSchedule.setScheduleId(ids);
         sysScheduleService.deleteScheduleByIds(sysSchedule);
         return toAjax(1);
+    }
+
+    @RequiresPermissions("system:schedule:syncRedis")
+    @Log(title = "待办管理", businessType = BusinessType.OTHER)
+    @PostMapping("/syncRedis")
+    @ResponseBody
+    public AjaxResult syncRedis(@Validated String ids) {
+        log.debug("账号同步");
+        List<SysSchedule> sysScheduleList = sysScheduleService.selectScheduleList(new SysSchedule());
+        //所有记录进行存储
+        if(sysScheduleList.size() > 0){
+            RedisRepository.delete(redis_code);
+            for(SysSchedule sysSchedule : sysScheduleList){
+                String str = JSON.toJSONString(sysSchedule);
+                RedisRepository.leftPush(redis_code, str);
+            }
+        }
+        return toAjax(1);
+    }
+
+    @RequiresPermissions("system:schedule:syncMongo")
+    @Log(title = "待办管理", businessType = BusinessType.OTHER)
+    @PostMapping("/syncMongo")
+    @ResponseBody
+    public AjaxResult syncMongo(@Validated String ids) {
+        log.debug("账号同步");
+        if(ids.trim().length() == 0){
+            List<SysSchedule> sysScheduleList = sysScheduleService.selectScheduleList(new SysSchedule());
+            //所有记录进行存储
+            if(sysScheduleList.size() > 0){
+                for(SysSchedule sysSchedule : sysScheduleList){
+                    mongoTemplate.remove(sysSchedule);
+                    mongoTemplate.insert(sysSchedule);
+                }
+            }
+        }else{
+            String[] scheduleIdArray = ids.split(",");
+            for(String scheduleId : scheduleIdArray){
+                SysSchedule sysScheduleInfo = new SysSchedule();
+                sysScheduleInfo.setScheduleId(scheduleId);
+
+                SysSchedule sysSchedule = sysScheduleService.selectSchedule(sysScheduleInfo);
+                if(sysSchedule != null){
+                    mongoTemplate.remove(sysSchedule);
+                    mongoTemplate.insert(sysSchedule);
+                }
+            }
+        }
+        return toAjax(1);
+    }
+
+    @Log(title = "待办管理", businessType = BusinessType.EXPORT)
+    @RequiresPermissions("system:schedule:export")
+    @PostMapping("/export")
+    @ResponseBody
+    public AjaxResult export(SysSchedule operLog)
+    {
+        List<SysSchedule> list = sysScheduleService.selectScheduleList(operLog);
+        ExcelUtil<SysSchedule> util = new ExcelUtil<SysSchedule>(SysSchedule.class);
+        return util.exportExcel(list, "待办管理");
     }
 }

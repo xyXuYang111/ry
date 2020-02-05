@@ -4,6 +4,8 @@ import com.ruoyi.common.core.domain.BaseEntity;
 import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -15,9 +17,12 @@ import javax.validation.constraints.Size;
  * @author ruoyi
  */
 @Data
+@Document(value = "SysFileType")
 public class SysFileType extends BaseEntity {
 
     private static final long serialVersionUID = -3125786916019576934L;
+
+    @Id
     /** 部门ID */
     private Long fileTypeId;
 
