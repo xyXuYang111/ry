@@ -130,25 +130,21 @@ xss:
   excludes: /system/notice/*
   # 匹配链接
   urlPatterns: /system/*,/monitor/*,/tool/*
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-
+        
 dubbo:
-  application:
-    name:  dubbo-consumer
-  registry:
-    address: 125.77.116.145:2182
-    # 读者请换成自己的zookeeperip
-    protocol: zookeeper
-    check: false
-  monitor:
-    protocol: register
   consumer:
-    check:  false
-    timeout: 3000
+    timeout: 5000
+  protocol:
+    name: dubbo
+    port: 8088
+  provider:
+    timeout: 1000
+  application:
+    id: ruoyi-dubbo
+    name: ruoyi-dubbo
+    version: 1.0
+  registry:
+    protocol: zookeeper
+    address: localhost:2181
 
 

@@ -85,9 +85,6 @@ public class AsyncFactory
                 SpringUtils.getBean(RedisService.class).leftPush("OPERATE_LOG", jsonObject);
                 //新增日志记录到mongo中
                 SpringUtils.getBean(SysOperLogMongoServiceImpl.class).insertOperlog(operLog);
-                //新增日志记录到elastic中
-                SysOperLogElastic operLogElastic = JSON.parseObject(jsonObject, SysOperLogElastic.class);
-                SpringUtils.getBean(SysOperLogElasticServiceImpl.class).insertOperlog(operLogElastic);
             }
         };
     }
@@ -151,9 +148,6 @@ public class AsyncFactory
                 SpringUtils.getBean(RedisService.class).leftPush("LOGIN_LOG", jsonObject);
                 //新增日志记录到mongo中
                 SpringUtils.getBean(SysLogininforMongoServiceImpl.class).insertLogininfor(logininfor);
-                //新增日志记录到elastic中
-                SysLogininforElastic logininforElastic = JSON.parseObject(jsonObject, SysLogininforElastic.class);
-                SpringUtils.getBean(SysLogininforElasticServiceImpl.class).insertLogininfor(logininforElastic);
             }
         };
     }

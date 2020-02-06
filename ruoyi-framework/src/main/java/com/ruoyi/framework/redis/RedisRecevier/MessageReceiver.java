@@ -2,13 +2,10 @@ package com.ruoyi.framework.redis.RedisRecevier;
 
 import com.alibaba.fastjson.JSON;
 import com.ruoyi.framework.redis.RedisService;
-import com.ruoyi.system.domain.SysOperLogElastic;
 import com.ruoyi.system.domain.SysRedisChat;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.Message;
-import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.stereotype.Component;
