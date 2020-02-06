@@ -223,7 +223,7 @@ public class SysFileInfoController extends BaseController {
     @Log(title = "文件管理", businessType = BusinessType.OTHER)
     @PostMapping("/syncRedis")
     @ResponseBody
-    public AjaxResult syncRedis(@Validated String ids) {
+    public AjaxResult syncRedis(String ids) {
         log.debug("账号同步");
         List<SysFileInfo> sysFileInfoList = sysFileInfoService.selectFileList(new SysFileInfo());
         //所有记录进行存储
@@ -241,7 +241,7 @@ public class SysFileInfoController extends BaseController {
     @Log(title = "文件管理", businessType = BusinessType.OTHER)
     @PostMapping("/syncMongo")
     @ResponseBody
-    public AjaxResult syncMongo(@Validated String ids) {
+    public AjaxResult syncMongo(String ids) {
         log.debug("账号同步");
         if(ids.trim().length() == 0){
             List<SysFileInfo> sysFileInfoList = sysFileInfoService.selectFileList(new SysFileInfo());

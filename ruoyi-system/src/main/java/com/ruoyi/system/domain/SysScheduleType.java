@@ -1,5 +1,6 @@
 package com.ruoyi.system.domain;
 
+import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
@@ -17,7 +18,7 @@ public class SysScheduleType extends BaseEntity {
     private static final long serialVersionUID = -3125786916019576934L;
 
     @Id
-    /** 部门ID */
+    @Excel(name = "待办类型编号", cellType = Excel.ColumnType.STRING)
     private Long scheduleTypeId;
 
     /** 父部门ID */
@@ -26,7 +27,7 @@ public class SysScheduleType extends BaseEntity {
     /** 祖级列表 */
     private String ancestors;
 
-    /** 部门名称 */
+    @Excel(name = "待办类型名称", cellType = Excel.ColumnType.STRING)
     private String typeName;
 
     /** 显示顺序 */
@@ -38,6 +39,6 @@ public class SysScheduleType extends BaseEntity {
     /** 删除标志（0代表存在 2代表删除） */
     private String delFlag;
 
-    /** 父部门名称 */
+    @Excel(name = "父级待办类型名称", cellType = Excel.ColumnType.STRING)
     private String parentName;
 }

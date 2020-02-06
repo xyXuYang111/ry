@@ -185,7 +185,7 @@ public class SysAccountController extends BaseController {
     @Log(title = "账号管理", businessType = BusinessType.OTHER)
     @PostMapping("/syncRedis")
     @ResponseBody
-    public AjaxResult syncRedis(@Validated String ids) {
+    public AjaxResult syncRedis(String ids) {
         log.debug("账号同步");
         List<SysAccount> sysAccountList = sysAccountService.selectAccountList(new SysAccount());
         //所有记录进行存储
@@ -203,7 +203,7 @@ public class SysAccountController extends BaseController {
     @Log(title = "账号管理", businessType = BusinessType.OTHER)
     @PostMapping("/syncMongo")
     @ResponseBody
-    public AjaxResult syncMongo(@Validated String ids) {
+    public AjaxResult syncMongo(String ids) {
         log.debug("账号同步");
         if(ids.trim().length() == 0){
             List<SysAccount> sysAccountList = sysAccountService.selectAccountList(new SysAccount());

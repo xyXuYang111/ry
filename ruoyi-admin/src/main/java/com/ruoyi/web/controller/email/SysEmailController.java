@@ -140,7 +140,7 @@ public class SysEmailController extends BaseController {
     @Log(title = "邮件管理", businessType = BusinessType.OTHER)
     @PostMapping("/syncRedis")
     @ResponseBody
-    public AjaxResult syncRedis(@Validated String ids) {
+    public AjaxResult syncRedis(String ids) {
         log.debug("邮件管理同步");
         List<SysEmail> sysEmailList = sysEmailService.selectEmailList(new SysEmail());
         //所有记录进行存储
@@ -158,7 +158,7 @@ public class SysEmailController extends BaseController {
     @Log(title = "邮件管理", businessType = BusinessType.OTHER)
     @PostMapping("/syncMongo")
     @ResponseBody
-    public AjaxResult syncMongo(@Validated String ids) {
+    public AjaxResult syncMongo(String ids) {
         log.debug("邮件管理同步");
         if(ids.trim().length() == 0){
             List<SysEmail> sysEmailList = sysEmailService.selectEmailList(new SysEmail());

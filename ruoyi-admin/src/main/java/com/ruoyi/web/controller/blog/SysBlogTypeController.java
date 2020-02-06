@@ -156,7 +156,7 @@ public class SysBlogTypeController extends BaseController {
     @Log(title = "博客类型管理", businessType = BusinessType.OTHER)
     @PostMapping("/syncRedis")
     @ResponseBody
-    public AjaxResult syncRedis(@Validated String ids) {
+    public AjaxResult syncRedis(String ids) {
         log.debug("账号同步");
         List<SysBlogType> sysBlogTypeList = sysBlogTypeService.selectBlogTypeList(new SysBlogType());
         //所有记录进行存储
@@ -174,7 +174,7 @@ public class SysBlogTypeController extends BaseController {
     @Log(title = "博客类型管理", businessType = BusinessType.OTHER)
     @PostMapping("/syncMongo")
     @ResponseBody
-    public AjaxResult syncMongo(@Validated String ids) {
+    public AjaxResult syncMongo(String ids) {
         log.debug("账号同步");
         if(ids.trim().length() == 0){
             List<SysBlogType> sysBlogTypeList = sysBlogTypeService.selectBlogTypeList(new SysBlogType());

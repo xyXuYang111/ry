@@ -1,5 +1,6 @@
 package com.ruoyi.system.domain;
 
+import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
@@ -17,7 +18,7 @@ public class SysBlogType extends BaseEntity {
     private static final long serialVersionUID = 6784444575512611237L;
 
     @Id
-    /** 部门ID */
+    @Excel(name = "博客类型序号", cellType = Excel.ColumnType.STRING)
     private Long blogTypeId;
 
     /** 父部门ID */
@@ -26,10 +27,10 @@ public class SysBlogType extends BaseEntity {
     /** 祖级列表 */
     private String ancestors;
 
-    /** 部门名称 */
+    @Excel(name = "类型名称", cellType = Excel.ColumnType.STRING)
     private String typeName;
 
-    /** 显示顺序 */
+    @Excel(name = "顺序", cellType = Excel.ColumnType.STRING)
     private String orderNum;
 
     /** 部门状态:0正常,1停用 */
@@ -38,6 +39,6 @@ public class SysBlogType extends BaseEntity {
     /** 删除标志（0代表存在 2代表删除） */
     private String delFlag;
 
-    /** 父部门名称 */
+    @Excel(name = "父级名称", cellType = Excel.ColumnType.STRING)
     private String parentName;
 }
