@@ -46,8 +46,7 @@ public abstract class RepeatSubmitInterceptor extends HandlerInterceptorAdapter
 
     /**
      * 验证是否重复提交由子类实现具体的防重复提交的规则
-     * 
-     * @param httpServletRequest
+     *
      * @return
      * @throws Exception
      */

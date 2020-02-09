@@ -1,5 +1,6 @@
 package com.ruoyi.framework.config;
 
+import com.ruoyi.framework.interceptor.RedisSessionInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +29,9 @@ public class ResourcesConfig implements WebMvcConfigurer
     @Autowired
     private RepeatSubmitInterceptor repeatSubmitInterceptor;
 
+    @Autowired
+    private RedisSessionInterceptor redisSessionInterceptor;
+
     /**
      * 默认首页的设置，当输入域名是可以自动跳转到默认指定的网页
      */
@@ -54,6 +58,7 @@ public class ResourcesConfig implements WebMvcConfigurer
     @Override
     public void addInterceptors(InterceptorRegistry registry)
     {
+        registry.addInterceptor(redisSessionInterceptor).addPathPatterns("/**");
         registry.addInterceptor(repeatSubmitInterceptor).addPathPatterns("/**");
     }
 }
