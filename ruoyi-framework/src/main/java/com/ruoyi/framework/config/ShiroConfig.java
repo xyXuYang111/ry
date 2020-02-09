@@ -262,10 +262,6 @@ public class ShiroConfig
         filterChainDefinitionMap.put("/add", "anon,captchaValidate");
         // 不需要拦截的访问
         filterChainDefinitionMap.put("/system/dept/selectDeptTree", "anon,captchaValidate");
-        // 不需要拦截的访问
-        filterChainDefinitionMap.put("/system/**/syncMongo", "anon,captchaValidate");
-        // 不需要拦截的访问
-        filterChainDefinitionMap.put("/system/**/syncRedis", "anon,captchaValidate");
         // 系统权限列表
         // filterChainDefinitionMap.putAll(SpringUtils.getBean(IMenuService.class).selectPermsAll());
 

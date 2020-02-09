@@ -15,11 +15,8 @@ import org.springframework.stereotype.Component;
 @Service
 public class RuoyiDubboConsumerImpl implements RuoyiDubboConsumer {
 
-    @Reference(version = "${dubbo.application.version}")
-    private RuoyiDubboProvider ruoyiDubboProvider;
-
     @Override
     public String sayHelloWord() {
-        return ruoyiDubboProvider.sayHelloWord();
+        return "放弃吧";
     }
 }

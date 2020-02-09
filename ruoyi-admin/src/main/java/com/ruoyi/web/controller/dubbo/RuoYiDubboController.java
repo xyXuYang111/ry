@@ -15,16 +15,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @Description:
  */
 @Slf4j
-@Controller
 public class RuoYiDubboController {
-
-    @Autowired
-    private RuoyiDubboConsumer ruoyiDubboConsumer;
 
     @ResponseBody
     @RequestMapping(name = "sayHelloWord", method = RequestMethod.GET)
     public String sayHelloWord(String name){
-        log.debug(name + ruoyiDubboConsumer.sayHelloWord());
-        return name + ruoyiDubboConsumer.sayHelloWord();
+        return "暂时放弃吧";
     }
 }

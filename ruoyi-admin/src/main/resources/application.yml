@@ -42,6 +42,11 @@ user:
 
 # Spring配置
 spring:
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: xuyang
+    password: 1234qwer
   # 模板引擎
   thymeleaf:
     mode: HTML
@@ -146,5 +151,7 @@ dubbo:
   registry:
     protocol: zookeeper
     address: localhost:2181
+
+
 
 
