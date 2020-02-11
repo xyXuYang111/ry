@@ -6,7 +6,7 @@
 <body class="white-bg">
 <div class="wrapper wrapper-content animated fadeInRight ibox-content">
     <form class="form-horizontal m" id="form-file-edit" th:object="${file}" enctype="multipart/form-data">
-        <input id="treeId" name="fileTypeId" type="hidden" th:value="*{fileTypeId}"/>
+        <input id="treeId" name="typeId" type="hidden" th:value="*{typeId}"/>
         <input id="fileId" name="fileId" type="hidden" th:value="*{fileId}"/>
         <div class="form-group">
             <label class="col-sm-3 control-label">文件类型：</label>

@@ -3,6 +3,12 @@ package com.ruoyi.framework.interceptor;
 import java.lang.reflect.Method;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.framework.redis.RedisService;
+import com.ruoyi.framework.util.ShiroUtils;
+import com.ruoyi.system.domain.SysUser;
+import com.ruoyi.system.service.ISysUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -19,9 +25,21 @@ import com.ruoyi.common.utils.ServletUtils;
 @Component
 public abstract class RepeatSubmitInterceptor extends HandlerInterceptorAdapter
 {
+
+    private static final String REDIS_USER = "REDIS_USER";
+
+    private static final int SESSION_TIME_OUT = 6400;
+
+    @Autowired
+    private RedisService redisService;
+
+    @Autowired
+    private ISysUserService sysUserService;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception
     {
+
         if (handler instanceof HandlerMethod)
         {
             HandlerMethod handlerMethod = (HandlerMethod) handler;

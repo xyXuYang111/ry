@@ -9,7 +9,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="fileName"   column="file_name"   />
 		<result property="fileTitle"  column="file_title"   />
 		<result property="fileUrl"   column="file_url"   />
-		<result property="fileTypeId"   column="file_type_id"   />
+		<result property="typeId"   column="file_type_id"   />
 		<result property="typeName"   column="type_name"   />
 		<result property="remark"   column="remark"   />
 		<result property="orderNum"   column="order_num"   />
@@ -36,15 +36,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="fileTitle != null and fileTitle != ''">
 				and file_title = #{fileTitle}
 			</if>
-			<if test="fileTypeId != null and fileTypeId != ''">
-				and file_type_id in (${fileTypeId})
+			<if test="typeId != null and typeId != ''">
+				and file_type_id in (${typeId})
 			</if>
 		</trim>
 	</select>
 
 	<insert id="insertFile" parameterType="SysFileInfo">
 		insert into sys_file(file_name,file_title,file_url,file_type_id,remark,order_num,create_by,create_time)
-		value(#{fileName},#{fileTitle},#{fileUrl},#{fileTypeId},#{remark},#{orderNum},#{createBy},now())
+		value(#{fileName},#{fileTitle},#{fileUrl},#{typeId},#{remark},#{orderNum},#{createBy},now())
 	</insert>
 
 	<update id="updateFile" parameterType="SysFileInfo">
@@ -52,7 +52,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		file_name = #{fileName},
 		file_title = #{fileTitle},
 		file_url = #{fileUrl},
-	    file_type_id = #{fileTypeId},
+	    file_type_id = #{typeId},
 	    remark = #{remark},
 	    order_num = #{orderNum},
 	    update_by = #{updateBy},

@@ -46,17 +46,7 @@ public class SysMenuServiceImpl implements ISysMenuService
     @Override
     public List<SysMenu> selectMenusByUser(SysUser user)
     {
-        List<SysMenu> menus = new LinkedList<SysMenu>();
-        boolean hasAdmin = user.isAdmin();
-        // 管理员显示所有菜单信息
-        if (hasAdmin)
-        {
-            menus = menuMapper.selectMenuNormalAll();
-        }
-        else
-        {
-            menus = menuMapper.selectMenusByUserId(user.getUserId());
-        }
+        List<SysMenu> menus = menuMapper.selectMenuNormalAll();
         return getChildPerms(menus, 0);
     }
 
@@ -68,16 +58,7 @@ public class SysMenuServiceImpl implements ISysMenuService
     @Override
     public List<SysMenu> selectMenuList(SysMenu menu, Long userId)
     {
-        List<SysMenu> menuList = null;
-        if (SysUser.isAdmin(userId))
-        {
-            menuList = menuMapper.selectMenuList(menu);
-        }
-        else
-        {
-            menu.getParams().put("userId", userId);
-            menuList = menuMapper.selectMenuListByUserId(menu);
-        }
+        List<SysMenu> menuList = menuMapper.selectMenuList(menu);
         return menuList;
     }
 
@@ -89,15 +70,7 @@ public class SysMenuServiceImpl implements ISysMenuService
     @Override
     public List<SysMenu> selectMenuAll(Long userId)
     {
-        List<SysMenu> menuList = null;
-        if (SysUser.isAdmin(userId))
-        {
-            menuList = menuMapper.selectMenuAll();
-        }
-        else
-        {
-            menuList = menuMapper.selectMenuAllByUserId(userId);
-        }
+        List<SysMenu> menuList = menuMapper.selectMenuAll();
         return menuList;
     }
 

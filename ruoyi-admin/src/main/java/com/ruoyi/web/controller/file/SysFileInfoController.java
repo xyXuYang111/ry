@@ -78,7 +78,7 @@ public class SysFileInfoController extends BaseController {
     public String selectDeptTree(@PathVariable("fileId") String fileId, ModelMap mmap)
     {
         SysFileInfo file = new SysFileInfo();
-        file.setFileTypeId(fileId);
+        file.setTypeId(fileId);
         mmap.put("file", sysFileInfoService.selectFileInfo(file));
         return prefix + "/tree";
     }

@@ -62,7 +62,7 @@ public class QRCodeUtil {
         vCard.setPhoneNumber(sysUser.getPhonenumber());
         vCard.setTitle("java开发");
         vCard.setEmail(sysUser.getEmail());
-        vCard.setWebsite("https://google.com");
+        vCard.setWebsite("http://g29125u915.wicp.vip/");
 
         ByteArrayOutputStream bout =
                 QRCode.from(vCard)

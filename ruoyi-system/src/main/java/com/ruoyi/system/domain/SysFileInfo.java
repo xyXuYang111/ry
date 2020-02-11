@@ -33,7 +33,7 @@ public class SysFileInfo extends BaseEntity {
     @Excel(name = "文件路径", cellType = Excel.ColumnType.STRING)
     private String fileUrl;
 
-    private String fileTypeId;
+    private String typeId;
 
     @Excel(name = "文件类型", cellType = Excel.ColumnType.STRING)
     private String typeName;

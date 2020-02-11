@@ -5,14 +5,13 @@
 </head>
 <body class="white-bg">
 <div class="wrapper wrapper-content animated fadeInRight ibox-content">
-    <form class="form-horizontal m" id="form-file-add" th:object="${fileType}" enctype="multipart/form-data">
-        <input id="treeId" name="fileTypeId" type="hidden" th:value="*{fileTypeId}"/>
+    <form class="form-horizontal m" id="form-file-add" enctype="multipart/form-data">
+        <input id="treeId" name="typeId" type="hidden" value="1"/>
         <div class="form-group">
             <label class="col-sm-3 control-label">文件类型：</label>
             <div class="col-sm-8">
                 <div class="input-group">
-                    <input class="form-control" type="text" onclick="selectFileTypeTree()" id="treeName" readonly="true"
-                           th:value="*{typeName}">
+                    <input class="form-control" type="text" onclick="selectFileTypeTree()" id="treeName" readonly="true">
                     <span class="input-group-addon"><i class="fa fa-search"></i></span>
                 </div>
             </div>
