@@ -33,13 +33,13 @@ public class Crypto4ADC {
         String driverClass = "gz+QKXl6e7PM6EDb/cUhT8NdW6neimPqhSOHFsOmOvcafMpp4iEE5V65/fEYir1fP69H7IgNX3hoSqF7oIyxoQ==";
         System.out.println(decode("c2332e42996e450ca1be7217174b7abb", driverClass));
 
-        String jdbcUrl = "xL8Dscp0q5T9Rk7Eq/SPTyGihls1Qcl3qZfKdJf0U+T6WOE0E/T2jMsMZKEceXJtFw17piSzgJx9lTBJCcGYEpWcojdsP5AC";
+        String jdbcUrl = "Q6ldg+xizXidk3FEEztYlhpATL7mghkQTORucYS1Ebc3seVSrzWUVWiTGyQWqIJR/KUJaxEt0ATpv199TcEeHUMgzec0HEY/";
         System.out.println(decode("c2332e42996e450ca1be7217174b7abb", jdbcUrl));
 
         String user = "+rr7V5KzbRpqqRxpmYAoNbpvDgkNBZd8Uuroo91944DjxQGLs16Qhg==";
         System.out.println(decode("c2332e42996e450ca1be7217174b7abb", user));
 
-        String password = "MFDU7tZ9V8fXsxkZnzA8UgPbO9i/qey8KzBlXaPXkoyxyLRswDWCacGH3QZtxnERcS3eIPJ24AM=";
+        String password = "l6yiS0cYxy9gZyb9Na9B7EdtkHPNpZRW50+VzTOBrljPbe8pTCKPKrsvtKFnegn5";
         System.out.println(decode("c2332e42996e450ca1be7217174b7abb", password));
     }
 }

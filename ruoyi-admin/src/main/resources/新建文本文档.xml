@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ROOT>
+    <PLAN>
+        <MARK_LIST_REMARK></MARK_LIST_REMARK>
+        <EXECUTE_YEAR>2020</EXECUTE_YEAR>
+        <INSERT_DATE>2019-12-18</INSERT_DATE>
+        <REMARK>原合同于2020年4月30日到期，为保证项目的连续性，需在下半年采购。</REMARK>
+        <F_START_DATE>2020-01-01</F_START_DATE>
+        <BID_PROJECT_CATEGORY>06</BID_PROJECT_CATEGORY>
+        <PROJECT_NATURE>11</PROJECT_NATURE>
+        <BID_PLAN_YEAR>2019</BID_PLAN_YEAR>
+        <BID_CONTENT>1、现场负责人2人、29名维修工、零星劳务用工500个工日；2、服务期限：2020年5月1日—2021年4月30日。</BID_CONTENT>
+        <PLAN_AUDIT_OPINION>
+            <APPROVE>
+                <APPROVE_DATE>2019-12-18 10:33:01</APPROVE_DATE>
+                <APPROVER>李文学</APPROVER>
+                <CONTAINS>请审核。</CONTAINS>
+            </APPROVE>
+            <APPROVE>
+                <APPROVE_DATE>2019-12-19 02:16:12</APPROVE_DATE>
+                <APPROVER>张于旺</APPROVER>
+                <CONTAINS>请审核。</CONTAINS>
+            </APPROVE>
+            <APPROVE>
+                <APPROVE_DATE>2019-12-19 03:16:04</APPROVE_DATE>
+                <APPROVER>高凌霞</APPROVER>
+                <CONTAINS>请审核。</CONTAINS>
+            </APPROVE>
+            <APPROVE>
+                <APPROVE_DATE>2019-12-20 01:18:40</APPROVE_DATE>
+                <APPROVER>谈翔</APPROVER>
+                <CONTAINS>请审核</CONTAINS>
+            </APPROVE>
+            <APPROVE>
+                <APPROVE_DATE>2019-12-20 03:48:59</APPROVE_DATE>
+                <APPROVER>赵文杰</APPROVER>
+                <CONTAINS>同意报出</CONTAINS>
+            </APPROVE>
+            <APPROVE>
+                <APPROVE_DATE>2019-12-20 04:04:18</APPROVE_DATE>
+                <APPROVER>高凌霞</APPROVER>
+                <CONTAINS>同意报出</CONTAINS>
+            </APPROVE>
+            <APPROVE>
+                <APPROVE_DATE>2019-12-20 05:16:26</APPROVE_DATE>
+                <APPROVER>王青</APPROVER>
+                <CONTAINS>请审核</CONTAINS>
+            </APPROVE>
+            <APPROVE>
+                <APPROVE_DATE>2019-12-25 05:03:34</APPROVE_DATE>
+                <APPROVER>刘威</APPROVER>
+                <CONTAINS>已备案。</CONTAINS>
+            </APPROVE>
+        </PLAN_AUDIT_OPINION>
+        <PLAN_TYPE></PLAN_TYPE>
+        <STATUS>1</STATUS>
+        <PROJECT_STATUS>1</PROJECT_STATUS>
+        <IS_ADVANCE>0</IS_ADVANCE>
+        <GROUP_FILING_STATUS>2</GROUP_FILING_STATUS>
+        <FUND_SOURCE>3</FUND_SOURCE>
+        <OWNER_CHARGE_DEP>913</OWNER_CHARGE_DEP>
+        <OLD_ID>46f17c135b7a4ee889252539e75fa564</OLD_ID>
+        <ADVANCE_PLAN_CODE></ADVANCE_PLAN_CODE>
+        <IS_I18N>0</IS_I18N>
+        <ID>94df745f97a846408f0592753b71f0e0</ID>
+        <EXECUTE_DEP>523</EXECUTE_DEP>
+        <SUGGEST_TENDER_TYPE>1</SUGGEST_TENDER_TYPE>
+        <BUDGET_CODE></BUDGET_CODE>
+        <TENDER_TYPE>3</TENDER_TYPE>
+        <CODE>191154330063</CODE>
+        <MATERIAL_LIST/>
+        <PROJECT_TYPE></PROJECT_TYPE>
+        <DESCRIPTION>实业公司2020年度溪洛渡区域场外道路及办公生产维护服务</DESCRIPTION>
+        <ESTABLISH_CONTENT></ESTABLISH_CONTENT>
+        <IS_LEGAL_TENDER>0</IS_LEGAL_TENDER>
+        <BID_SCALE>180</BID_SCALE>
+        <INVITE_COMPANYS></INVITE_COMPANYS>
+        <F_END_DATE>2020-03-31</F_END_DATE>
+        <PROJECT_SCALE>6</PROJECT_SCALE>
+        <UPDATE_USER>liu_fang4</UPDATE_USER>
+        <ADD_DEP>54</ADD_DEP>
+        <INSERT_USER>liu_fang4</INSERT_USER>
+        <MARK_LIST_INFO></MARK_LIST_INFO>
+    </PLAN>
+</ROOT>
