@@ -19,9 +19,10 @@
 				<div class="col-sm-8">
 					<div class="input-group">
 						<input id="treeId" name="blogTypeId" type="hidden" value="1"/>
-						<input class="form-control" type="text" name="blogType" onclick="selectBlogTypeTree()" id="treeName" readonly="true"
-							   th:value="*{blogType}">
-						<span class="input-group-addon"><i class="fa fa-search"></i></span>
+						<!--<input class="form-control" type="text" name="blogType" onclick="selectBlogTypeTree()" id="treeName" readonly="true"
+							   th:value="*{blogType}">-->
+						<input class="form-control" type="text" name="blogType" id="blogType" th:value="*{blogType}" required>
+						<!--<span class="input-group-addon"><i class="fa fa-search"></i></span>-->
 					</div>
 				</div>
 			</div>
