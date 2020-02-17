@@ -74,6 +74,11 @@ spring:
     restart:
       # 热部署开关
       enabled: true
+  data:
+    mongodb:
+      host: 127.0.0.1
+      port: 27017
+      database: mydb
 
 # MyBatis
 mybatis:

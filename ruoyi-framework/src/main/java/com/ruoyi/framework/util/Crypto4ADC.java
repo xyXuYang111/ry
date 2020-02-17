@@ -39,7 +39,7 @@ public class Crypto4ADC {
         String user = "+rr7V5KzbRpqqRxpmYAoNbpvDgkNBZd8Uuroo91944DjxQGLs16Qhg==";
         System.out.println(decode("c2332e42996e450ca1be7217174b7abb", user));
 
-        String password = "l6yiS0cYxy9gZyb9Na9B7EdtkHPNpZRW50+VzTOBrljPbe8pTCKPKrsvtKFnegn5";
+        String password = "MFDU7tZ9V8fXsxkZnzA8UgPbO9i/qey8KzBlXaPXkoyxyLRswDWCacGH3QZtxnERcS3eIPJ24AM=";
         System.out.println(decode("c2332e42996e450ca1be7217174b7abb", password));
     }
 }
