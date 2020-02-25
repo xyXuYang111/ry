@@ -53,6 +53,8 @@ public class SysUser extends BaseEntity
     @Excel(name = "用户性别", readConverterExp = "0=男,1=女,2=未知")
     private String sex;
 
+    private String webSite;
+
     /** 用户头像 */
     private String avatar;
 
@@ -320,6 +322,14 @@ public class SysUser extends BaseEntity
     public void setPostIds(Long[] postIds)
     {
         this.postIds = postIds;
+    }
+
+    public String getWebSite() {
+        return webSite;
+    }
+
+    public void setWebSite(String webSite) {
+        this.webSite = webSite;
     }
 
     @Override

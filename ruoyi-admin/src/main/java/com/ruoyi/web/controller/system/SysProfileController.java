@@ -155,6 +155,7 @@ public class SysProfileController extends BaseController
         currentUser.setEmail(user.getEmail());
         currentUser.setPhonenumber(user.getPhonenumber());
         currentUser.setSex(user.getSex());
+        currentUser.setWebSite(user.getWebSite());
         if (userService.updateUserInfo(currentUser) > 0)
         {
             ShiroUtils.setSysUser(userService.selectUserById(currentUser.getUserId()));
