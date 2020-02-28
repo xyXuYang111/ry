@@ -92,6 +92,7 @@ public class SysEmailController extends BaseController {
     @ResponseBody
     public AjaxResult addSave(@Validated SysEmail email) {
         email.setCreateBy(ShiroUtils.getUserIdStr());
+        email.setStatus("0");
         sysEmailService.insertEmail(email);
         return toAjax(1);
     }

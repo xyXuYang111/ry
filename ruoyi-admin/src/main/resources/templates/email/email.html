@@ -91,7 +91,7 @@
 					field: 'emailType',
 					title: '发送方式',
 					formatter: function(value, item, index) {
-						return $.table.selectDictLabel(datas, item.status);
+						return $.table.selectDictLabel(datas, item.emailType);
 					}
 				},
 				{
@@ -103,11 +103,6 @@
 					title: '发送人认证码'
 				},
 				{
-					field: 'sendPassword',
-					title: '发送人密码'
-				},
-
-				{
 					field: 'receiveName',
 					title: '接收人名称'
 				},
@@ -115,11 +110,6 @@
 					field: 'receiveNumber',
 					title: '接收人编码'
 				},
-				{
-					field: 'receivePassword',
-					title: '接收人密码'
-				},
-
 				{
 					field: 'remark',
 					title: '备注',

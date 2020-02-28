@@ -74,7 +74,7 @@ public class SysEmailImpl implements SysEmailService {
                 sysEmail.setEmailId(emailIdArray);
                 SysEmail sysEmailInfo = sysEmailMapper.selectEmail(sysEmail);
                 String emailType = sysEmailInfo.getEmailType();
-                if(emailType.equals("1")){
+                if(emailType.equals("2")){
                     try {
                         EmailQq.sendEmailQq(sysEmailInfo);
                         sysEmail.setStatus("1");
@@ -82,7 +82,7 @@ public class SysEmailImpl implements SysEmailService {
                         sysEmail.setStatus("2");
                     }
                 }
-                if(emailType.equals("2")){
+                if(emailType.equals("1")){
                     try {
                         EmailSend163.sendMail(sysEmailInfo);
                         sysEmail.setStatus("1");

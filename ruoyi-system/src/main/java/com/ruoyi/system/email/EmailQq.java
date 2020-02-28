@@ -16,7 +16,7 @@ import java.util.Properties;
 /**
  * @Auther: 许洋
  * @Date: 2019/1/6 21:39
- * @Description: qq邮箱
+ * @Description: qq邮箱  密码：egyjwdsxrwsldbea
  */
 @Slf4j
 @Component
