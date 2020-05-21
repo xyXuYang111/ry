@@ -11,8 +11,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class IpUtils
 {
-    public static String getIpAddr(HttpServletRequest request)
-    {
+    public static String getIpAddr(HttpServletRequest request) {
         if (request == null)
         {
             return "unknown";
@@ -43,8 +42,7 @@ public class IpUtils
         return "0:0:0:0:0:0:0:1".equals(ip) ? "127.0.0.1" : ip;
     }
 
-    public static boolean internalIp(String ip)
-    {
+    public static boolean internalIp(String ip) {
         byte[] addr = textToNumericFormatV4(ip);
         return internalIp(addr) || "127.0.0.1".equals(ip);
     }
@@ -174,14 +172,10 @@ public class IpUtils
         return "127.0.0.1";
     }
 
-    public static String getHostName()
-    {
-        try
-        {
+    public static String getHostName() {
+        try {
             return InetAddress.getLocalHost().getHostName();
-        }
-        catch (UnknownHostException e)
-        {
+        } catch (UnknownHostException e) {
         }
         return "未知";
     }
